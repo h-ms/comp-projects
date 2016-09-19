@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="codecademy-html-and-css">Codecademy HTML and CSS</h1>
+<p><a href="https://www.codecademy.com/learn/web">This Codecademy course unit</a> teaches the basics of HTML and CSS. Including projects, this course contains 7 units.</p>
+<h2 id="unit-1.-introduction-to-html">Unit 1. Introduction to HTML</h2>
+<dl>
+<dt>HTML</dt>
+<dd><p>Hypertext Markup Language. Hypertext is text with links in it. HTML gives websites structure.</p>
+</dd>
+</dl>
+<p>Expected structure of a HTML page:</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+...
+&lt;/html&gt;</code></pre>
+<p>In between the <code>html</code> tags, usually a <code>head</code> and a <code>body</code> part appear. The head contains information about the HTML file, such as the file's <code>title</code>. The body part contains page content, often as headings <code>h1</code>, <code>h2</code>, <code>h3</code>, ... or in paragraphs <code>p</code>.</p>
+<p>Link tags (<code>a</code>) carry an <code>href</code> attribute giving the web address for the hyperlink. The clickable text for the hyperlink appears between the opening and closing tags.</p>
+<p>Image tags (<code>img</code>) carry a <code>src</code> attribute giving the URL for the image to display. The image tag has no closing tag, but ends with <code>/&gt;</code>.</p>
+<p>Link and image tags can be combined, adding a clickable image to a hyperlink instead of clickable text.</p>
+<h2 id="unit-2.-html-structure-using-lists">Unit 2. HTML structure: using lists</h2>
+<p>Ordered lists (<code>ol</code>) are body elements that contain numbered list items (<code>li</code>). Unordered lists (<code>ul</code>) are body elements that contain list items (<code>li</code>) that start with bullet points. Lists can be nested, meaning a new list is a child of a list <strong>item</strong>! From the (W3 wiki)[https://www.w3.org/wiki/HTML_lists#Nesting_lists]: &quot;The key to nesting lists is to remember that the nested list should relate to one specific list item. To reflect that in the code, the nested list is contained inside that list item.&quot;</p>
+<h3 id="inline-styling-examples">Inline styling examples</h3>
+<ul>
+<li>comments appear in between <code>&lt;!-- --&gt;</code> notation</li>
+<li>the <code>style</code> attribute in an opening tag allows adding inline styling to headings, paragraphs and links. The specification of the style is given in quotes <code>style=&quot;font-size: 12px; color: red; font-family: Arial; background-color: grey; text-align: center&quot;</code></li>
+<li>the <code>strong</code> tag by default makes enclosed text appear in bold face</li>
+<li>the <code>em</code> tag by default italicizes enclosed text</li>
+</ul>
+<h2 id="unit-3.-html-structure-tables-divs-and-spans">Unit 3. HTML structure: tables, divs and spans</h2>
+<h3 id="tables">Tables</h3>
+<p>Just like the <code>html</code> element is subdivided into <code>head</code> and <code>body</code>, a <code>table</code> element can be specified in terms of a table head (<code>thead</code>) and a table body (<code>tbody</code>). The <code>tbody</code> encloses a nested structure of table rows <code>tr</code> and table data <code>td</code>. More columns are added by adding additional <code>td</code> tags inside a table row. Similarly, the <code>thead</code> encloses a nested structure of table rows <code>tr</code> and table headings <code>th</code>. The <code>th</code> tag takes attribute <code>colspan=&quot;x&quot;</code>, with <code>x</code> the number of columns to span over. Both <code>th</code> and <code>td</code> tags take <code>style</code> attributes, some of which are specific to tables.</p>
+<h3 id="div-and-span">Div and span</h3>
+<p>The <code>div</code> (division) tag divides the page into containers: these are particularly useful when combined with CSS. <code>div</code> containers have attributes like <code>width</code> and <code>height</code> that set their dimensions. Width can be in <code>px</code> but also, for example, in <code>%</code>.</p>
+<p><code>span</code> elements allow you to style smaller parts of the page, such as text.</p>
+<h2 id="unit-4.-introduction-to-css">Unit 4. Introduction to CSS</h2>
+<dl>
+<dt>CSS</dt>
+<dd><p>cascading style sheets: a language that describes the appearance and formatting of HTML</p>
+</dd>
+<dt>style sheet</dt>
+<dd><p>a file that describes how an HTML file should look</p>
+</dd>
+<dt>cascading</dt>
+<dd><p>the ability to add formatting when more than one style applies</p>
+</dd>
+</dl>
+<p>Style code that is not inline can either appear:</p>
+<ul>
+<li>in the <code>style</code> element of an HTML file's <code>head</code></li>
+<li>in a separate CSS file. In this case, add a <code>link</code> (self-closing) tag in the HTML page's <code>head</code>. The <code>link</code> has attributes
+<ul>
+<li><code>type</code>, which should be set to <code>&quot;text/css&quot;</code>,</li>
+<li><code>rel</code>, which should be set to <code>&quot;stylesheet&quot;</code>,</li>
+<li><code>href</code>, which should contain the name of the CSS file. The separator between attributes consists of one or more blanks</li>
+</ul></li>
+</ul>
+<p>Random facts about CSS:</p>
+<ul>
+<li><p>CSS comments are placed in between <code>/*   */</code>.</p></li>
+<li><p>Font size <code>em</code> is equal to the default font size the user is using.</p></li>
+<li><p>Three built-in fonts in CSS are <code>serif</code>, <code>sans-serif</code> and <code>cursive</code>. These can be placed as alternative fonts or backup values (that will always work) after some other fonts which the computer may not know. Use comma as separator.</p></li>
+<li><p>The <code>border</code> property is useful in e.g. tables, figures. Many items, including data entries (<code>td</code>), can also be modified using properties such as <code>height</code>, given in pixels.</p></li>
+<li><p>Links have a <code>text-decoration</code> property, which can be set to <code>none</code>.</p></li>
+</ul>
+<h2 id="unit-5-css-classes-and-ids">Unit 5: CSS classes and ids</h2>
+<ul>
+<li>An HTML document can be thought of as a tree.</li>
+<li>In terms of terminology, an element is a child of <strong>every</strong> element wrapped around it, even if that element is several &quot;branches&quot; away.</li>
+<li>Certain selectors will &quot;override&quot; others if they have a greater <em>specificity</em> value</li>
+</ul>
+<p>Specifying selectors:</p>
+<ol style="list-style-type: decimal">
+<li>elements can be differentiated by the level of nesting: e.g. <code>div div div h3</code></li>
+<li>the <code>*</code> selector selects every element on the HTML page; using this in combination with the <code>border</code> property visualizes the <strong>&quot;HTML/CSS box model&quot;</strong></li>
+<li>specify a direct child using <code>&gt;</code>, e.g. <code>div &gt; p</code></li>
+<li>classes and ids are more specific than element-based selectors
+<ul>
+<li>classes are identified in CSS with a dot, e.g. <code>.square</code></li>
+<li>classes are identified in HTML with the attribute <code>class</code>, e.g. <code>class=&quot;square&quot;</code></li>
+<li>ids are used when there is a specific element (rather than a class of elements) that should be formatted in a particular way</li>
+<li>ids are identified in CSS with a pound (hash) sign, e.g. <code>#square</code></li>
+<li>ids are identified in HTML with the attribute <code>id</code>, e.g. <code>id=&quot;square&quot;</code></li>
+</ul></li>
+<li>pseudo-class selectors allow accessing items that are not part of the HTML tree (example: links that have been clicked on). They are represented in CSS by <code>:</code>.
+<ul>
+<li><code>a:link</code> refers to an unvisited link,</li>
+<li><code>a:visited</code> refers to a visited link,</li>
+<li><code>a:hover</code> refers to a link that is hovered over</li>
+<li><code>p:first-child</code> refers to paragraphs that are the first child <strong>(of any kind: paragraph, heading, ...)</strong> of their parent elements</li>
+<li><code>p:nth-child(n)</code> refers to paragraphs that are the nth child <strong>(of any kind: paragraph, heading, ...)</strong> of their parent elements</li>
+</ul></li>
+</ol>
+<h2 id="unit-6-css-positioning">Unit 6: CSS positioning</h2>
+<p>Controlling the position of HTML elements allows you incredibly fine control over how your pages look. The CSS box model refers to the fact that each HTML element is a box that holds contents.</p>
+<ul>
+<li>By default, elements take up the full width of the page (they therefore sit on top of each other)</li>
+<li>The <code>display</code> property affect horizontal outlining of elements; values are
+<ol style="list-style-type: decimal">
+<li><code>block</code>: box takes up full width</li>
+<li><code>inline-block</code>: box accepts neighbours; if there are none, it takes up full width</li>
+<li><code>inline</code>: box only takes up as much space as it needs for its contents</li>
+<li><code>none</code>: box is not displayed</li>
+</ol></li>
+<li>A box has multiple layers. From outermost to innermost, these are
+<ol style="list-style-type: decimal">
+<li><code>margin</code>: empty space around the HTML element</li>
+<li><code>border</code>: edge of the HTML element that can be visualized using the <code>border</code> property</li>
+<li><code>padding</code>: space between element contents and the border edge</li>
+<li><code>content</code>: the actual stuff in the box</li>
+</ol>
+Each of margin, border and padding can be specified in terms of
+<ul>
+<li>top</li>
+<li>right</li>
+<li>left</li>
+<li>bottom</li>
+</ul></li>
+</ul>
+<p>Adjusting our margins not only moves our element relative to other elements on the page, but also relative to the &quot;walls&quot; of the HTML document.</p>
+<ul>
+<li><code>margin: auto;</code> centers a box on its line</li>
+<li><code>margin-top: 10px;</code> sets the margin at one side</li>
+<li><code>margin: 10px 20px 10px 20px;</code> sets all margin sides</li>
+<li>padding is set in the similar way as margin: either at one side or all. <code>padding: 10px;</code> uses the same padding width on all four sides.</li>
+</ul>
+<p>Just like increasing a margin will move the box further away from its neighbours, decreasing a margin will bring it closer (to the point of even overlapping its neighbours in case of negative margins).</p>
+<p><strong>Floating</strong> elements puts them into the flow of other elements without elements landing on top of each other. The CSS <code>float</code> property gives the direction in which an element should float on the page.</p>
+<p>Floating and non-floating elements can end up on top of each other. Use <code>clear: both</code> to place non-floating elements below elements that may be floating to its left or right.</p>
+<p><strong>Static</strong> elements (default positioning) do not position themselves in any particular way relative to other elements.</p>
+<p><strong>Absolute</strong> elements are positioned relative to the first non-static parent (or <code>html</code>if there is none). Absolute positioning is set using <code>position: absolute;</code>.</p>
+<p><strong>Relative</strong> elements are positioned relative to where they would have landed if they were <code>static</code>. Set using <code>position: relative</code>.</p>
+<p><strong>Fixed</strong> elements are positioned relative to the browser display area (meaning they appear stuck to the screen and do not react to scrolling).</p>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="code-guide-by-mdo">Code Guide by <span class="citation">@mdo</span></h1>
+<h2 id="standards-for-developing-flexible-durable-and-sustainable-html-and-css">Standards for developing flexible, durable, and sustainable HTML and CSS</h2>
+<p><a href="http://codeguide.co/">This web page</a> provides style conventions for HTML and CSS. This summary lists the most important points to remember.</p>
+<p>General idea behind style guides: &quot;Every line of code should appear to be written by a single person, no matter the number of contributors.&quot;</p>
+<h2 id="html">HTML</h2>
+<ol style="list-style-type: decimal">
+<li>Indent nested elements once with two spaces (soft tab)</li>
+<li>Use double quotes on attribute values</li>
+<li>Use the <code>lang</code> attribute in the opening <code>html</code> tag</li>
+<li>Specify character encoding in a <code>&lt;meta&gt;</code> tag; e.g. <code>charset=&quot;UTF8&quot;</code>. Once specified, you no longer need to use character entities in HTML (e.g. <code>&amp;raquo;</code>).</li>
+<li>Order of the common attributes:
+<ol style="list-style-type: decimal">
+<li><code>class</code></li>
+<li><code>id</code></li>
+<li><code>src</code>, <code>type</code>, <code>href</code>, <code>value</code></li>
+<li><code>alt</code></li>
+</ol></li>
+<li>Avoid superfluous parent elements (e.g. <code>span</code>)</li>
+<li>Do not write markup in Javascript files</li>
+</ol>
+<h2 id="css">CSS</h2>
+<ol style="list-style-type: decimal">
+<li>Whenever you group selectors in a single CSS statement, write each on a separate line</li>
+<li>Use one space before the opening brace of a declaration block</li>
+<li>Place the closing brace on a new line</li>
+<li>Use a space after the colon <code>:</code></li>
+<li>Give each declaration its own line and always end with semi-colon</li>
+<li>Do not use spaces between the arguments of values such as <code>rgb()</code></li>
+<li>Do <em>not</em> add leading zeros in property values</li>
+<li>Lower-case all hexadecimal values</li>
+<li>Do not specify units for zero values: <code>0</code> and not <code>0px</code></li>
+<li>Group declarations for a given selector as follows:
+<ol style="list-style-type: decimal">
+<li>Positioning</li>
+<li>Box model</li>
+<li>Typographic</li>
+<li>Visual</li>
+</ol></li>
+<li>Place media queries as close to their relevant rule sets whenever possible.</li>
+<li>Do not use short-hand notation when only a single value needs to be set: <code>margin-bottom: 10px;</code> instead of <code>margin: 0 0 10px;</code></li>
+<li>Comments: great code comments convey context or purpose</li>
+<li>Class names: use dashes as separator in prefix-clases</li>
+<li>Selectors:
+<ol style="list-style-type: decimal">
+<li>Use classes over generic element tag for optimum rendering performance</li>
+<li>Avoid using several attribute selectors on commonly occurring components</li>
+</ol></li>
+<li>Organize sections of code by component</li>
+</ol>
+</body>
+</html>

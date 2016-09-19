@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="dash---html5-and-css3">Dash - HTML5 and CSS3</h1>
+<p><a href="https://dash.generalassemb.ly">This page</a> teaches the basics of HTML5 and CSS3. Complete the first three projects.</p>
+<h2 id="part-1.-html-basics">Part 1. HTML basics</h2>
+<ul>
+<li>Form inputs are created using the <code>&lt;input&gt;</code> tag
+<ul>
+<li>attributes include <code>email</code> and <code>submit</code> (for email field and submit button)</li>
+<li>the <code>email</code> attribute can be joined by a <code>placeholder</code> attribute</li>
+<li>avoid some of the styling defaults by setting <code>border: 0</code> for the <code>input</code> selector in CSS and then add further style elements manually</li>
+<li>style the <code>input</code> selector by one of its attributes by using <code>input[type=&quot;submit&quot;]</code></li>
+</ul></li>
+<li>Add a background image in CSS by using <code>background: url(&quot;&quot;);</code>
+<ul>
+<li>avoid the background image from appearing &quot;tiled&quot; by using <code>background-size: cover;</code> (if it is not important that all of the image is visible at all times this is more mobile-friendly than using 100%).</li>
+<li>also set <code>background-position: center;</code></li>
+</ul></li>
+</ul>
+<h2 id="part-2.-build-a-responsive-blog-theme">Part 2. Build a responsive blog theme</h2>
+<ul>
+<li>The <code>header</code> tag is nested within the <code>body</code> tag
+<ul>
+<li>navigation menus may be added in the <code>header</code> using an unordered list <code>ul</code></li>
+<li>when centering such lists they appear not aligned: to resolve this, add padding in all directions, <code>padding: 10px;</code></li>
+<li>in navigation menus, list items are placed next to each other: <code>display: inline;</code> (instead of block format),</li>
+<li>subsequently add left and right padding to separate navigation items further</li>
+</ul></li>
+<li><p><code>&quot;normalize.css&quot;</code> is a style sheet that makes browsers render elements in line with modern standards</p></li>
+<li><p>Make round border (e.g. around images) by using the <code>border-radius</code> setting</p></li>
+<li><p>The <code>&lt;article&gt;</code> tag groups text elements that belong together content-wise</p></li>
+<li><p>Move content to center-page by using <code>margin: 0 auto;</code> meaning 0 margin at top and bottom and auto-margin left and right (adds as much margin as is available to both sides).</p></li>
+<li>Making content responsive to various screens and devices:
+<ol style="list-style-type: decimal">
+<li>use <code>max-width</code> instead of <code>width</code> to allow auto-wrapping of text when the screen size is narrower than a given width</li>
+<li>add CSS code conditional on screen width using <strong>media queries</strong></li>
+</ol>
+<ul>
+<li>Add applicable CSS declarations inside <code>@media (max-width: 500px) { }</code></li>
+<li>Add media queries at the end of the style sheet to make sure no later elements can override these conditional styles</li>
+</ul></li>
+<li>Hex color codes specify redness, greenness and blueness, each from 0 to F. <code>#f00</code> is a valid hex code
+<ul>
+<li>color function <code>rgba()</code> throws opacity into the argument list (in 4th position with value between 0 and 1). The first three arguments are RGB each with values between 0 and 255</li>
+<li>use attribute <code>opacity</code> to set just the opacity</li>
+</ul></li>
+<li><p>Add buttons with text using the <code>&lt;button&gt;text&lt;/button&gt;</code> construct</p></li>
+<li>Add javascript to add actions to buttons: use the <code>&lt;script&gt;&lt;/script&gt;</code> construct and place it just before the closing <code>body</code> tag.
+<ul>
+<li>The simplest javascript action is the &quot;alert&quot; action: <code>&lt;script&gt;alert(&quot;Javascript works!&quot;);&lt;/script&gt;</code></li>
+<li>Associate javascript actions with button &quot;events&quot; (such as clicks) using e.g. jquery code: <code>$(button).on(&quot;click&quot;, function() { alert(&quot;Clicked!&quot;) });</code>. Javascript &quot;listens&quot; for button events.</li>
+</ul></li>
+</ul>
+<h2 id="part-3.-build-a-small-business-website">Part 3. Build a small business website</h2>
+<ul>
+<li><code>div</code> is a multi-purpose element that groups elements to allow the same CSS can be applied to them. In contrast to <code>article</code> or <code>header</code>, <code>div</code> is non-semantic.</li>
+<li><code>div</code> tags are used in combination with <code>class</code> attributes that name and group the <code>div</code> blocks.</li>
+<li><code>div</code> in combination with <code>class</code> allows the overarching style to be specified for <code>div</code> and class-specific style for each of the classes.</li>
+<li>Styles flow down in order of specificity: <code>class</code> style takes priority over <code>div</code> style.</li>
+<li><p>If the style for a particular element is not specified, the style of a higher-level element will be applied.</p></li>
+<li>CSS <code>line-height</code> sets the vertical space between lines in a paragraph</li>
+<li><p><code>text-align: justify;</code> makes all lines of equal width</p></li>
+<li><p>position paragraph text inside a <code>div</code> relative to that <code>div</code> by setting <code>position: relative;</code> for the <code>div</code> and <code>position: absolute;</code> for the <code>p</code>.</p></li>
+<li>line breaks are self-closing tags: <code>&lt;br /&gt;</code></li>
+<li><p>semantic tag <code>small</code> can be used to indicate that specific text should be printed smaller.</p></li>
+<li><code>span</code> elements are <strong>inline</strong> elements used to give part of the parent element (such as <code>p</code>) a different style.</li>
+<li>The fact that <code>span</code> is inline means it cannot use style element <code>text-align</code> (which works on blocks only).</li>
+<li>Other inline elements are <code>img</code>, <code>a</code> and <code>input</code>.</li>
+<li><p>Style element <code>float</code> allows inline elements to be aligned relative to their containers.</p></li>
+<li><p>Currently (2016) background gradients only work when specified in combination with vendor prefixes (<code>background: -webkit-linear-gradient(...);</code>). Keep however a line without the prefixes, in case they are discontinued. In IE, gradients are not supported. Therefore, add a line with (solid) <code>background-color</code> in first position, followed by lines for browsers that do support background gradients.</p></li>
+<li>Non-default fonts can be found on <a href="http://google.com/fonts">Google Web Fonts</a></li>
+<li><p>Select a font and copy the HTML and CSS code in the &quot;Embed&quot; submenu into your HTML (in <code>head</code>, above the CSS link or block) and CSS files</p></li>
+<li><p>Universal (default) <code>div</code> style has a margin of 40px above and none at other sides.</p></li>
+</ul>
+<h3 id="jquery">jQuery</h3>
+<ul>
+<li><p>Include jQuery source in the <code>head</code>: e.g. <code>&lt;script scr=&quot;/assets/jquery.js&quot;&gt;&lt;/script&gt;</code></p></li>
+<li>jQuery can be used to add interactive behavior:
+<ul>
+<li>Example: clicking on an HTML element toggles a CSS class which modifies styles. The JS action here would be <code>$(this).toggleClass('show-description');</code></li>
+<li>JS variable <code>$(this)</code> refers to the HTML element that the JS function was called on (e.g. the one that was clicked if the event listener is <code>.on('click', ...)</code>)</li>
+</ul></li>
+<li><p>CSS3 feature <code>transition</code> can be added to make interactive JS behavior visually more appearing, e.g. by adding a sliding e: <code>-webkit-transition: height .5s;</code> where <code>height</code> belongs to an element whose style can be toggled by clicking on it</p></li>
+</ul>
+</body>
+</html>

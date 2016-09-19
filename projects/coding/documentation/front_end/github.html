@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="github">GitHub</h1>
+<p><a href="https://www.youtube.com/watch?v=0fKg7e37bQE">This link</a> contains an instruction video on developing and collaborating in GitHub pages. The summary below only explains how to get started in two situations. The remainder has been summarized in the &quot;Try Git&quot; documentation.</p>
+<h2 id="cloning">Cloning</h2>
+<p>If a repository structure has been set up in GitHub but none exists yet locally, clone the GitHub repository into a local folder of your choice</p>
+<pre><code>git clone https://github.com/h-ms/newrepo.git</code></pre>
+<p>and then start working from this cloned repository.</p>
+<h2 id="fetch-and-push">Fetch and push</h2>
+<p>If a local repository already exists, push its contents to a (newly created) GitHub repository as follows:</p>
+<ol style="list-style-type: decimal">
+<li>add the remote repository (<code>git remote add origin https://github.com/...</code>)</li>
+<li>pull the remote repository (<code>git pull origin master</code>) in order to update the local code base with any files present on the remote</li>
+<li>stage and commit</li>
+<li>push the local repository to the remote (<code>git push -u origin master</code>)</li>
+</ol>
+</body>
+</html>

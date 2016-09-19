@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="dns-explained">DNS explained</h1>
+<p><a href="https://youtu.be/72snZctFFtA">This video</a> explains how DNS lookup works: i.e., how a domain name is translated to an IP address.</p>
+<h2 id="who-knows-what">Who knows what</h2>
+<p>The following list illustrates the lookup process for a given query (<code>www.example.com</code>) if the IP address is not stored in the browser cache, operating system memory or in the resolving name server's cache.</p>
+<ul>
+<li><p>because of the dot (implied) at the end of the domain name (<code>www.example.com.</code>), the resolving name server knows it should ask the root name server</p></li>
+<li><p>based on the name in the top-level of the domain name (e.g.,<code>com</code>), the root name server knows which top-level domain (TLD) name server to ask (namely, the <code>.com</code> server)</p></li>
+<li><p>based on the name before the top-level (<code>example</code>) and the information passed on by the domain registrar, the TLD name server knows which authoritative name server to ask</p></li>
+<li><p>the authoritative name server will provide the IP address (for <code>www.example.com</code>)</p></li>
+</ul>
+<p>All the while, the resolving name server stores information given to it by the respective name servers in its cache.</p>
+</body>
+</html>

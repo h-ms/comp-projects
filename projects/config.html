@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="installing-r-on-an-html5-box-including-apache-in-codeanywhere.com">Installing R on an HTML5 box (including Apache) in Codeanywhere.com</h1>
+<p>See <a href="http://blog.terminal.com/getting-an-up-to-date-r-and-rstudio-installation-on-ubuntu/">Terminal.com blog entry on Ubuntu Stats</a>.</p>
+<h2 id="install-binary-dependencies">Install binary dependencies</h2>
+<p>Run the following commands with <code>sudo</code>.</p>
+<pre><code>apt-get update
+apt-get install -y libcurl4-openssl-dev  
+apt-get install -y libgstreamer-plugins-base0.10-0  
+apt-get install -y gdebi-core  
+apt-get install -y libapparmor1  
+apt-get install -y  libxml2-dev  
+apt-get install -y libcurl4-gnutls-dev
+</code></pre>
+<h2 id="install-r">Install R</h2>
+<p>Install <code>R</code> using an Ubuntu repository hosted on one of the CRAN mirrors.</p>
+<pre><code>sudo sh -c &quot;echo &#39;deb http://cran.cnr.Berkeley.edu/bin/linux/ubuntu trusty/&#39; &gt;&gt; /etc/apt/sources.list&quot;</code></pre>
+<h3 id="obtain-a-public-key-for-the-ubuntu-repository-containing-recent-r-versions">Obtain a public key for the Ubuntu repository containing recent R versions</h3>
+<p>See <a href="https://cran.cnr.berkeley.edu/bin/linux/ubuntu/">Berkeley CRAN mirror</a>. The Ubuntu archives on CRAN are signed with the key of “Michael Rutter marutter@gmail.com” with key ID E084DAB9. To add the key to your system with one command use:</p>
+<pre><code>sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9</code></pre>
+<p>Now update and get <code>R</code>:</p>
+<pre><code>sudo apt-get update  
+sudo apt-get install -y --force-yes r-base r-base-dev</code></pre>
+<h2 id="install-r-packages">Install R packages</h2>
+<p>Set a default CRAN mirror in the <code>.Rprofile.site</code> site-wide startup profile file.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> sh -c <span class="st">&quot;cat &gt;&gt; /etc/R/Rprofile.site &lt;&lt; EOF  </span>
+<span class="st">local({  </span>
+<span class="st">  # add MASS to the default packages, set a CRAN mirror</span>
+<span class="st">  old &lt;- getOption(&#39;defaultPackages&#39;); r &lt;- getOption(&#39;repos&#39;)</span>
+<span class="st">  r[&#39;CRAN&#39;] &lt;- &#39;https://cran.rstudio.com&#39;</span>
+<span class="st">  options(defaultPackages = c(old, &#39;MASS&#39;), repos = r)</span>
+<span class="st">})</span>
+<span class="st">EOF&quot;</span>  </code></pre></div>
+<p>Run the following commands in <code>R</code> as superuser.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;roxygen2&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;testthat&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;knitr&quot;</span>)
+
+<span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;tidyr&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;plyr&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;stringr&quot;</span>)  
+<span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)
+
+<span class="kw">install.packages</span>(<span class="st">&quot;knitr&quot;</span>)
+<span class="kw">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)
+
+<span class="kw">install.packages</span>(<span class="st">&quot;deSolve&quot;</span>)
+<span class="kw">install.packages</span>(<span class="st">&quot;shiny&quot;</span>)</code></pre></div>
+<p>Building package <code>RcppEigen</code> does not work due to too low memory.</p>
+<pre><code>sudo apt-get install r-cran-rcppeigen</code></pre>
+<p>Then install <code>lme4</code> as superuser.</p>
+<h1 id="installing-emacs-for-text-terminal">Installing Emacs for text terminal</h1>
+<pre><code>sudo apt-get emacs24-nox
+mkdir ~/.emacs.d
+touch ~/.emacs.d/init.el</code></pre>
+<h2 id="installing-emacs-package-ess">Installing Emacs package 'ess'</h2>
+<p>Use the Emacs package manager to install 'ess'. It ends up in ~/.emacs.d/elpa/ess-20151210.52</p>
+<h1 id="installing-a-graphical-ui-for-r">Installing a graphical UI for R</h1>
+<p>Again, see <a href="http://blog.terminal.com/getting-an-up-to-date-r-and-rstudio-installation-on-ubuntu/">Terminal.com blog entry on Ubuntu Stats</a>. We will install the RStudio-server version, which runs in the browser and is great for working in the cloud</p>
+<pre><code>sudo wget http://download2.rstudio.org/rstudio-server-0.99.467-amd64.deb  
+sudo gdebi -n rstudio-server-0.99.467-amd64.deb</code></pre>
+<p>RStudio server is installed and can be accessed on port 8787. <code>rstudio-server stop</code> kills the RStudio server process.</p>
+<h2 id="adding-a-password-for-a-non-root-user-account-for-use-with-rstudio-server">Adding a password for a non-root user account for use with RStudio server</h2>
+<p>The following creates a password for user <code>cabox</code> with password <code>rstudio</code>.</p>
+<pre><code>    sudo sh -c &quot;passwd cabox &lt;&lt;EOF  
+    rstudio
+    rstudio
+    EOF&quot;</code></pre>
+<h1 id="install-a-recent-pandoc-version-including-pandoc-citeproc">Install a recent pandoc version (including pandoc-citeproc)</h1>
+<pre><code>sudo wget https://github.com/jgm/pandoc/releases/download/1.15.2/pandoc-1.15.2-1-amd64.deb
+sudo gdebi -n pandoc-1.15.2-1-amd64.deb</code></pre>
+<h1 id="updating-and-upgrading">Updating and upgrading</h1>
+<h2 id="updating-r-packages-2016-01-08">updating R packages (2016-01-08)</h2>
+<p>In <code>R</code> as super user, use</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">old.packages</span>() <span class="co"># check the output for packages you want to update</span>
+myOldPkgs &lt;-<span class="st"> </span><span class="kw">old.packages</span>()[<span class="kw">c</span>(<span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;rmarkdown&quot;</span>, <span class="st">&quot;knitr&quot;</span>, <span class="st">&quot;MASS&quot;</span>),]
+<span class="kw">update.packages</span>(<span class="dt">oldPkgs =</span> myOldPkgs, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
+<span class="kw">old.packages</span>() <span class="co"># check that updated packages are no longer shown in the output</span></code></pre></div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="try-git">Try Git</h1>
+<p><a href="https://try.github.io/levels/1/challenges/1">This link</a> contains an interactive tutorial on Git, a distributed version control system.</p>
+<h2 id="main-work-flow">Main work flow</h2>
+<p>Inside the directory you wish to version control type</p>
+<pre><code>git init</code></pre>
+<p>To check the status of the repository type</p>
+<pre><code>git status</code></pre>
+<p>Start tracking a file (adding to the staging area) by typing</p>
+<pre><code>git add myfile.txt
+git add &#39;*.txt&#39;</code></pre>
+<p>Use quotes on wildcards: Git will expand wildcards to underlying folders, the shell will not!</p>
+<p>To retract a file from the staging area, use</p>
+<pre><code>git reset myfile.txt</code></pre>
+<p>Store changes to the repository using</p>
+<pre><code>git commit -m &quot;Add myfile.txt&quot;</code></pre>
+<p>To get an overview of past commits, type</p>
+<pre><code>git log</code></pre>
+<p>To see which changes have been made to the staging area since the last commit, use</p>
+<pre><code>git diff --staged</code></pre>
+<p>Change a file back to how it looked like at the last commit (using <code>--</code> to explicitly indicate no further options are given after the dashes)</p>
+<pre><code>git checkout -- myfile.txt</code></pre>
+<p>Remove files on disk as well as stage their removal from the next commit use</p>
+<pre><code>git rm myfile.txt</code></pre>
+<h2 id="remote-repositories">Remote repositories</h2>
+<p>Before pushing a local repository to the GitHub server, first define the remote repository: supply a name for the remote repository (usually <code>origin</code>) and give its URL</p>
+<pre><code>git remote add origin https://github.com/try-git/try_git.git</code></pre>
+<p>Add your work (stored in commits) to the remote repository using</p>
+<pre><code>git push -u origin master</code></pre>
+<p><code>master</code> refers to the default branch name of the repository; <code>-u</code> tells <code>git</code> to remember the parameters so that the next push can be performed using just</p>
+<pre><code>git push</code></pre>
+<p>Check for changes to the GitHub repository and pull down any new changes using</p>
+<pre><code>git pull origin master</code></pre>
+<p>Compare any changes made with the latest version committed locally</p>
+<pre><code>git diff HEAD</code></pre>
+<h2 id="branches">Branches</h2>
+<p>When starting work on a feature typically the programmer copies the code to a new branch on the repository; when finished, this branch is merged back with the master branch Create a new branch:</p>
+<pre><code>git branch feature_x</code></pre>
+<p>Switch to the new branch using</p>
+<pre><code>git checkout feature_x</code></pre>
+<p>After work on the feature is done, first switch back to the master branch</p>
+<pre><code>git checkout master</code></pre>
+<p>And then merge into it the changes made on the feature branch</p>
+<pre><code>git merge feature_x</code></pre>
+<p>Delete a branch you do not need anymore using</p>
+<pre><code>git branch -d feature_x</code></pre>
+</body>
+</html>

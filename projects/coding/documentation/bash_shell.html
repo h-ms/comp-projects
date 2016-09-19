@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="the-shell">The Shell</h1>
+<p><a href="http://linuxcommand.org/lc3_learning_the_shell.php">This web site</a> explains basic linux shell commands.</p>
+<p>A shell is an interface to the operating system. The shell can be accessed through a terminal emulator. The most used shell on Linux is the <code>bash</code> shell.</p>
+<dl>
+<dt><code>pwd</code></dt>
+<dd><p>print working directory</p>
+</dd>
+<dt><code>cd</code></dt>
+<dd><p>change directory (without arguments: home dir; with <code>-</code>: previous directory)</p>
+</dd>
+<dt><code>ls</code></dt>
+<dd><p>list files (use <code>-a</code> to also show hidden files/files starting with <code>.</code>; use <code>-l</code> for long format; also takes multiple paths as arguments)</p>
+</dd>
+<dt><code>less</code></dt>
+<dd><p>displaying file text</p>
+</dd>
+<dt><code>file</code></dt>
+<dd><p>determines the type of file</p>
+</dd>
+<dt><code>ln</code></dt>
+<dd><p>symbolic link to another file (allows e.g. an application name to switch between various versions of that application)</p>
+</dd>
+<dt><code>mv</code></dt>
+<dd><p>rename</p>
+</dd>
+<dt><code>cp</code></dt>
+<dd><p>copy (<code>-i</code>: interactive (asks before overwriting), <code>-R</code>: recursive (any subdirectories are copied too))</p>
+</dd>
+<dt><code>rm</code></dt>
+<dd><p>remove (or move files/directory to a directory)</p>
+</dd>
+<dt><code>mkdir</code></dt>
+<dd><p>create a directory</p>
+</dd>
+<dt><code>type</code></dt>
+<dd><p>type of command (shell built-in, alias, shell script or executable)</p>
+</dd>
+<dt><code>which</code></dt>
+<dd><p>determines the location of an executable</p>
+</dd>
+<dt><code>help</code></dt>
+<dd><p>bash help page for a given command</p>
+</dd>
+<dt><code>man</code></dt>
+<dd><p><code>man</code> page for a given command</p>
+</dd>
+<dt><code>zless</code></dt>
+<dd><p><code>less</code> command that allows viewing contents of <code>gzip</code>-compressed text files</p>
+</dd>
+</dl>
+<h2 id="linux-directory-tree">Linux directory tree</h2>
+<table>
+<colgroup>
+<col width="22%" />
+<col width="77%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="left"><p>/boot</p></td>
+<td align="left"><p>contains bootloader scripts and kernel (<code>vmlinuz</code>)</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/etc</p></td>
+<td align="left"><p>contains configuration files * /etc/passwd contains user info * /etc/fstab contains mounted devices * /etc/hosts contains network host names and IP addresses * /etc/init.d contains startup scripts for services</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>/bin, /usr/bin</p></td>
+<td align="left"><p>contains applications needed by system, users</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/sbin, /usr/sbin</p></td>
+<td align="left"><p>contains applications for the system administrator</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>/usr</p></td>
+<td align="left"><p>utilities to support user applications * /usr/share/X11 support files for X window system * /usr/share/dict spell check dictionaries * /usr/share/doc documentation files * /usr/share/man man pages * /usr/src source code files</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/usr/local</p></td>
+<td align="left"><p>Software not part of the original distro goes here</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>/var</p></td>
+<td align="left"><p>Files that change as the system is running * /var/log log files * /var/spool queued files from local email or print jobs</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/lib</p></td>
+<td align="left"><p>shared libraries</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>/home</p></td>
+<td align="left"><p>where users store their personal work</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/root</p></td>
+<td align="left"><p>super user home dir</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>/tmp</p></td>
+<td align="left"><p>where programs can store temporary files</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/dev</p></td>
+<td align="left"><p>devices available to the system, represented in file format</p></td>
+</tr>
+<tr class="odd">
+<td align="left"><p>/proc</p></td>
+<td align="left"><p>virtual representation of processes and configurations</p></td>
+</tr>
+<tr class="even">
+<td align="left"><p>/media, /mnt</p></td>
+<td align="left"><p>mount points for attaching physical storage devices (mnt is for manually mounted devices such as cdrom)</p></td>
+</tr>
+</tbody>
+</table>
+<h2 id="io-redirection">I/O redirection</h2>
+<dl>
+<dt><code>&gt;</code></dt>
+<dd><p>redirect standard output to file</p>
+</dd>
+<dt><code>&gt;&gt;</code></dt>
+<dd><p>append redirected output to file</p>
+</dd>
+<dt><code>&lt;</code></dt>
+<dd><p>redirect standard input from a file</p>
+</dd>
+<dt><code>|</code></dt>
+<dd><p>standard output of one command is fed into standard input of another (e.g. <code>ls -l | less</code> to make any command use scrolling output)</p>
+</dd>
+</dl>
+<h2 id="filters">Filters</h2>
+<p>Common programs that act as filters: <code>sort</code>, <code>uniq</code>, <code>grep</code>, <code>fmt</code>, <code>pr</code>, <code>head</code>, <code>tail</code>, <code>tr</code>, <code>sed</code>, <code>awk</code>.</p>
+<h2 id="expansions">Expansions</h2>
+<p>Use the <code>echo</code> command to find out how wildcards etc are expanded</p>
+<ul>
+<li><p>arithmetic expansion: <code>echo $((math expression))</code>. <code>/</code> can be used for integer division, <code>%</code> for the integer remainder. <code>bash</code> only works with integers!</p></li>
+<li><p>brace expansion: <code>echo Front-{1..2}-back</code> gives multiple text strings each containing consecutive elements inside the braces</p></li>
+<li><p>parameter expansion: <code>echo $USER</code> takes variable USER and expands to its value (or empty string if it does not exist). Use <code>printenv | less</code> to view a list of available parameters</p></li>
+<li><p>command substitution: uses the output of a command as an expansion (<code>ls -l $(which cp)</code> returns the contents of the directory in which the <code>cp</code> command is located). For functions that do not accept standard input, arguments can be passed using command substitution. See <a href="http://unix.stackexchange.com/a/122730">this</a> StackExchange answer.</p></li>
+</ul>
+<h2 id="quotes">Quotes</h2>
+<ul>
+<li><p>double quotes suppress special meanings, expansions and word splitting, except for characters <code>$</code>, <code>\</code> and back-ticks</p></li>
+<li><p>double quotes protect whitespace: <code>echo $(cal)</code> does not keep embedded whitespace, <code>echo &quot;$(cal)&quot;</code> keeps e.g. newlines</p></li>
+<li><p>single quotes suppress all expansions</p></li>
+<li><p>suppress individual characters using escape character <code>\</code>. Commands can be spread over multiple lines by escaping the newline using <code>\</code>.</p></li>
+<li><p>backslashes can be used to insert special characters (&quot;backslash escape characters&quot;): <code>\n</code>, <code>\t</code>, <code>\a</code>, <code>\\</code>.</p></li>
+</ul>
+<h2 id="permissions">Permissions</h2>
+<p>Linux is a multi-user Operating System, with multiple users being able to connect to a single computer.</p>
+<dl>
+<dt>chmod</dt>
+<dd><p>change permissions of a file or directory (may be used with octal specifiers, e.g. 600 or 777)</p>
+</dd>
+<dt>chown</dt>
+<dd><p>change ownership of a file or directory (<code>sudo chown target_user myfile</code>)</p>
+</dd>
+<dt>chgrp</dt>
+<dd><p>change group ownership of a file or directory (<code>chgrp target_group myfile</code>). Only the file owner can perform this action.</p>
+</dd>
+</dl>
+<h2 id="job-control">Job control</h2>
+<p>Linux is also a multi-tasking operating system, with each processor working on multiple processes (although not at the same time).</p>
+<dl>
+<dt>bg</dt>
+<dd><p>put a suspended program in the background (suspend a program using <code>Ctrl-z</code>). A program can be put in the background directly when starting it by adding a <code>&amp;</code>; e.g. <code>xload &amp;</code>. Putting a program in the background will give you the command prompt back.</p>
+</dd>
+<dt>ps, jobs</dt>
+<dd><p>list processes started from the terminal, list your own processes</p>
+</dd>
+<dt>kill</dt>
+<dd><p>sends signal to a process (by default termination signal <code>SIGTERM</code>); the process is identified with the process id (PID) or job number (use a percentage sign as a prefix)</p>
+</dd>
+</dl>
+<p>Processes listen for signals from the operating system and should react appropriately and gracefully when they receive a signal. Signals other than <code>SIGTERM</code> include</p>
+<ul>
+<li><code>SIGINT</code>, which interrupts processes (can also be activated by <code>Ctrl-c</code>)</li>
+<li><code>SIGKILL</code>, which immediately terminates a process (programs cannot listen for this signal)</li>
+</ul>
+<p>These signals can be used as arguments to the <code>kill</code> command: <code>kill -SIGKILL 1234</code>, or equivalently <code>kill -9 1234</code></p>
+</body>
+</html>

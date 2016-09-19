@@ -1,0 +1,37 @@
+---
+output: html_document
+---
+
+
+
+```{r, echo = FALSE, message = FALSE}
+
+library(knitr)
+read_chunk("Difeqs001.R")
+
+```
+
+
+
+```{r packages, echo = FALSE, message = FALSE}
+
+```
+
+
+
+# Differential equations with Modeling Applications
+
+## Plotting functions in R
+
+```{r plotting_functions}
+
+```
+
+
+
+## Setting up a system of differential equations
+
+```{r ODE_system}
+
+```
+

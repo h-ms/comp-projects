@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <meta name="generator" content="pandoc">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -43,9 +43,6 @@ code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Ann
 code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
   </style>
-  <!--[if lt IE 9]>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
-  <![endif]-->
 </head>
 <body>
 <h1 id="installing-r-on-an-html5-box-including-apache-in-codeanywhere.com">Installing R on an HTML5 box (including Apache) in Codeanywhere.com</h1>
@@ -95,7 +92,10 @@ sudo apt-get install -y --force-yes r-base r-base-dev</code></pre>
 <span class="kw">install.packages</span>(<span class="st">&quot;rmarkdown&quot;</span>)
 
 <span class="kw">install.packages</span>(<span class="st">&quot;deSolve&quot;</span>)
-<span class="kw">install.packages</span>(<span class="st">&quot;shiny&quot;</span>)</code></pre></div>
+<span class="kw">install.packages</span>(<span class="st">&quot;shiny&quot;</span>)
+
+<span class="kw">install.packages</span>(<span class="st">&quot;pryr&quot;</span>)
+<span class="kw">install.packages</span>(<span class="st">&quot;rsconnect&quot;</span>)</code></pre></div>
 <p>Building package <code>RcppEigen</code> does not work due to too low memory.</p>
 <pre><code>sudo apt-get install r-cran-rcppeigen</code></pre>
 <p>Then install <code>lme4</code> as superuser.</p>
@@ -107,8 +107,8 @@ touch ~/.emacs.d/init.el</code></pre>
 <p>Use the Emacs package manager to install 'ess'. It ends up in ~/.emacs.d/elpa/ess-20151210.52</p>
 <h1 id="installing-a-graphical-ui-for-r">Installing a graphical UI for R</h1>
 <p>Again, see <a href="http://blog.terminal.com/getting-an-up-to-date-r-and-rstudio-installation-on-ubuntu/">Terminal.com blog entry on Ubuntu Stats</a>. We will install the RStudio-server version, which runs in the browser and is great for working in the cloud</p>
-<pre><code>sudo wget http://download2.rstudio.org/rstudio-server-0.99.467-amd64.deb  
-sudo gdebi -n rstudio-server-0.99.467-amd64.deb</code></pre>
+<pre><code>sudo wget https://download2.rstudio.org/rstudio-server-0.99.893-amd64.deb
+sudo gdebi -n rstudio-server-0.99.893-amd64.deb</code></pre>
 <p>RStudio server is installed and can be accessed on port 8787. <code>rstudio-server stop</code> kills the RStudio server process.</p>
 <h2 id="adding-a-password-for-a-non-root-user-account-for-use-with-rstudio-server">Adding a password for a non-root user account for use with RStudio server</h2>
 <p>The following creates a password for user <code>cabox</code> with password <code>rstudio</code>.</p>

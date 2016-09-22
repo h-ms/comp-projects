@@ -78,6 +78,7 @@ install.packages("deSolve")
 install.packages("shiny")
 
 install.packages("pryr")
+install.packages("rsconnect")
 ```
 
 Building package `RcppEigen` does not work due to too low memory.

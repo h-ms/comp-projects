@@ -273,11 +273,17 @@ Jekyll's Blog-Awareness means that it has built-in support for blog-related feat
 *   pages
 *   custom layouts
 
-When trying out the examples listed in the book, you may need to switch between themes. Instead of copy pasting and deleting specific files,
-use the help in <http://stackoverflow.com/a/37186333>.
+When trying out the examples listed in the book, you may need to switch between themes. Instead of copy pasting and deleting specific files, use the help in <http://stackoverflow.com/a/37186333>.
+In short, the process involves 
 
-
-
+1. creating a new branch without history (`git checkout --orphan newtheme`), 
+2. switching to it (`git checkout newtheme`), 
+3. cleaning it out (`git rm -rf .`, `git clean -dfx`),
+4. adding the theme repo as an "upstream" remote (`git remote add upstream <url>` i.e., unlike the "origin" remote, you only pull from it, never push to it)
+5. `git fetch upstream`,
+6. `git pull upstream master`
+7. Copy across blog posts from the master branch: `git checkout master -- _posts`
+8. stage and commi
 
 
     

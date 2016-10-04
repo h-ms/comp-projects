@@ -282,18 +282,77 @@ In short, the process involves
 4. adding the theme repo as an "upstream" remote (`git remote add upstream <url>` i.e., unlike the "origin" remote, you only pull from it, never push to it)
 5. `git fetch upstream`,
 6. `git pull upstream master`
-7. Copy across blog posts from the master branch: `git checkout master -- _posts`
-8. stage and commi
+7. Build the theme locally and test it (`sudo bundle exec jekyll serve`)
+7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). Rename or remove files leading to conflict (e.g. `Gemfile`)
+8. stage and commit changes
+9. define the merge strategy for merging the new theme branch with the main branch (`git merge -s ours master`), favoring the new theme's code in case of conflicts
+10. switch to master branch,
+11. merge the new theme branch `git merge newtheme`
+12. push the changes
+13. clean up the new theme branch
 
 
+#### Kactus theme (/nickbalestra/kactus)
+
+*   an `assets` folder contains styling assets for the blog
+    *   CSS style sheets
+    *   fonts
+    *   images used in blog posts or pages
+    *   JS files pertinent to theme or layout
+*   a `feed.xml` file contains ATOM feed of blog posts and other changes synchronized over the web
+*   the `_includes` folder contains 
+    *   a `disqus.html` file, containing JS code provided by commenting system "Disqus". Further instructions
+        can be found on the [Disqus site](https://help.disqus.com/customer/portal/articles/472138-jekyll-installation-instructions).
+    *   a `footer.html` file, containing code for the page's footer (containing Liquid variables)
+    *   a `navigation.html` file, containing the code for a navigation bar
+    *   a `pagination.html` file; spreads posts across pages (starting with page 0) and adds "Previous" and "Next" page links.
+    *   a `post_list.html` file that shows (on the home page) the list of posts: the code in this HTML file is usually present in `index.html`           
+    *   the `profile.html` file contains the author's profile, included in every page using the layouts
+    *   the `share.html` file provides code that allows users to share posts on Twitter or Facebook. Share buttons can be implemented in 3 ways:
+      *  using embed code provided by the social media site
+      *  using embed code obtained through a third-party plugin service (with blog pages linked through an Admin panel)
+      *  completely custom code (used e.g. in the kactus theme): providing a link to the social media site where post can be shared
+*   the `_layouts` folder containing templates (layouts) that tell Jekyll what to take from the `_includes` folder and how to integrate it into a web site
+    *   the `default.html` layout (from which all other layouts inherit)
+      *  the `head` includes page title and favicon, stylesheets (including for syntax highlighting) and RSS feed
+      *  the `body` loads include files such as profile, navigation, as well as 
+      *  javascript code including JQuery, `main.js`, `highlight.js`, a function `initHighlightingOnLoad()` and Google Analytics.
+    *  the `posts.html` layout is the template that every post (i.e. file with YAML layout variable set to "post") will follow and that builds on the default layout
+      *  contains an `article` tag with class `"post"`, with inside it a `section` tag with id `"post-body"`,
+      *  contains a `footer` including author's Twitter home, name and site info and loads the code in `share.html`
+      *  contains a `div` for Disqus comments (if applicable)
+      *  contains the archive post list (as an unstructured list)
+*   the `_posts` folder containing markdown posts
+*   `index.html` specifies that the author profile is displayed (YAML: `profile: true`) and imports `post-list.html` and `footer.html`
+*   `_config.yml` allows all parameters (site, page or YAML) for the blog to be defined
+    
+    
+#### Jekyll themes and Git
+
+The theme used in this Chapter will be converted by GitHub Pages to a static website, hosted by GitHub Pages.
+
+##### Planning and designing a web site
+
+A web site project specification covers the following aspects:
+
+1.  Scope
+    *   objective
+    *   audience
+    *   interactivity
+    *   time spent on content versus maintenance
+2.  Scale
+    *   how easy will it be to integrate new technology
+    *   mailing list (expanding audience)
+3.  Tools list
     
 
-      
-           
-           
-           
 
-       
+Design pointers:
+
+* If examples of similar web sites are available, use those for inspiration.
+* Create a prototype post, archive, ... page (e.g. on plain paper) to start analyzing the behavior of your site.
+* Prototypes can be used to answer the design questions around scope and scale.
+* Then, make a tools list and think about code snippets/include files that are needed to implement them.
 
 
 

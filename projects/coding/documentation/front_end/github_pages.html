@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1 id="github-pages">GitHub pages</h1>
+<p><a href="https://pages.github.com/">This tutorial</a> shows how to publish a webpage on GitHub pages.</p>
+<h2 id="work-flow">Work flow</h2>
+<p>GitHub lets you create websites for individual projects as well as a user or organization site.</p>
+<h3 id="user-or-organization-site">User or organization site</h3>
+<p>If the second option applies, proceed as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Create a repository called <code>username.github.io</code></li>
+<li>Clone the repository to your local git environment. When working in CodeAnywhere, every container by default is configured to be a git repository as well. Cloning <code>username.github.io</code> into the container's working dir would thus create a repository inside a repository. To prevent this, create a CodeAnywhere container that is a &quot;connection&quot; to the <code>username.github.io</code> repository: this will automatically set the value of the remote repository to GitHub's <code>username.github.io</code>.</li>
+<li>Create an <code>index.html</code> file in the <code>workspace</code> directory (the same directory that also contains the <code>.git</code> folder.</li>
+<li>Add the file to the staging area and commit.</li>
+<li>Push the commit to the remote repository simply by using <code>git push -u origin master</code></li>
+<li>Check your website on <code>http://username.github.io</code>.</li>
+</ol>
+<p>Improving and customizing GitHub webpages is covered in the next main section</p>
+<h3 id="project-site">Project site</h3>
+<p>Create a GitHub site from scratch based on an existing project (repository).</p>
+<ol style="list-style-type: decimal">
+<li>Create a new file and call it <code>index.html</code></li>
+<li>Add some content</li>
+<li>Commit</li>
+<li>If working locally, push the commit to the remote repository</li>
+<li>In the project's <code>Settings</code> tab, go to GitHub pages and select <code>master branch</code> in the <code>Source</code> field</li>
+<li>View the result on <code>https://username.github.io/projectname/</code></li>
+</ol>
+<h2 id="using-jekyll-as-a-static-site-generator">Using Jekyll as a static site generator</h2>
+<p>Set up Jekyll locally to test changes to your site. Installation requires a recent version of Ruby. With Ruby available, install Jekyll as follows (tested in CodeAnywhere with Ubuntu 14.04 LTS):</p>
+<p>Install Bundler:</p>
+<pre><code>sudo gem install bundler</code></pre>
+<p>Create a Gemfile in the local git repository. Add the following code to a text file called <code>Gemfile</code>.</p>
+<pre><code>source &#39;https://rubygems.org&#39;
+gem &#39;github-pages&#39;, group: :jekyll_plugins</code></pre>
+<p>Install Jekyll and other dependencies from the GitHub Pages gem:</p>
+<pre><code>sudo bundle install</code></pre>
+<h3 id="generate-jekyll-site-files">Generate Jekyll site files</h3>
+<p>Create a Jackyll template site as follows:</p>
+<pre><code>bundle exec jekyll new . --force</code></pre>
+<p>The output should say something like: <code>New jekyll site installed in /home/cabox/workspace.</code></p>
+<p>Edit your Gemfile and remove the following line: <code>&quot;jekyll&quot;, &quot;3.2.1&quot;</code>. Uncomment the following line by removing the <code>#</code>: <code>gem &quot;github-pages&quot;, group :jekyll_plugins</code></p>
+<p>The above locks the Jekyll version to that used by GitHub pages.</p>
+<p>Use <code>sudo bundle update github-pages</code> to update to the version run by HitHub pages.</p>
+<p>Commit and push changes to the site to GitHub using Git.</p>
+<h3 id="build-and-test-your-local-jekyll-site">Build and test your local Jekyll site</h3>
+<p>Run</p>
+<pre><code>sudo bundle exec jekyll serve</code></pre>
+<h3 id="intro-to-jekyll-from-the-book-creating-blogs-with-jekyll-by-vikram-dhillon">Intro to Jekyll (from the book: &quot;Creating Blogs with Jekyll&quot; by Vikram Dhillon)</h3>
+<p>The GitHub Pages Help sites do not explain in-depth how to blog with Jekyll. Therefore, a summary of abovementioned book is given here (parts II and III).</p>
+<ol style="list-style-type: decimal">
+<li>Jekyll contains a parser (&quot;kramdown&quot;) that converts markdown into HTML; HTML is subsequently entered into a blog template (to be provided by the user). All in all, the following elements are input:
+<ul>
+<li>Content consisting of GitHub-flavoured Markdown (GFM) blog post text<br />
+</li>
+<li>Template file (written in &quot;Liquid&quot;) specifying the structure of the static web page</li>
+<li>Include file</li>
+<li>Configuration file containing options and variables required for compilation And a static HTML site is output.</li>
+</ul></li>
+<li><p>Both the blog post contents and the static website are version-controlled using Git.</p></li>
+<li>In a Jekyll blog site, both the CSS and HTML aspects can be powered by <strong>stylistic front-end frameworks</strong>. These are time-saving alternatives to using HTML5 and CSS3.
+<ul>
+<li><p>For HTML, these are <a href="http://getbootstrap.com/">Bootstrap</a> and <a href="http://foundation.zurb.com/">Foundation</a>.</p>
+<p>In essence, Bootstrap is extending HTML to do more complex tasks such as making a drop-down menu as in just a few lines of code. Bootstrap components are segments of HTML code with auto-styling applied. Bootstrap is available as a CDN link and as an archive that can be downloaded from the web site to be used as a template.</p>
+<p>Foundation is a framework with a slightly more advanced grid layout.</p></li>
+<li><p>For CSS, these are <a href="http://sass-lang.com/">Sass</a> and <a href="http://lesscss.org/">LESS</a>.</p>
+<p>Sass is a ruby-based CSS pre-processor (similar to PHP being a pre-processor for HTML) that makes lengthy CSS manageable. It uses variables and inheritance in an object-oriented programming style. Sass comes in two types of syntax: SCSS and indented (the former being the standard). Sass works with multiple modular style sheets (with name format <code>_filename.sass</code> if they are imported) that are combined by the pre-processor before being presented to the web server.</p></li>
+</ul>
+<p>Neither of the frameworks Sass and LESS is specific to front-end packages such as Bootstrap or Foundation.</p></li>
+<li><p>Jekyll needs to access markdown blog posts and show them under the appropriate panel (set up in HTML using the stylistic framework). The code doing this is a <strong>handlebars component</strong> that can turn a normal theme into a Jekyll-injectable blog template.</p></li>
+<li>A repository of Jekyll themes is provided in <a href="http://jekyllthemes.org/" class="uri">http://jekyllthemes.org/</a>.
+<ul>
+<li>the Whitepaper theme, which is Bootstrap-based, is discussed, as well as</li>
+<li>Vanilla Bean Crème is Sass- and Jekyll-based and</li>
+<li>Emerald, which is responsive and has an off-canvas menu.</li>
+<li>Compass is a simple theme suitable for creating quick landing pages.</li>
+</ul></li>
+</ol>
+<h3 id="fundamentals-of-jekyll-from-the-book-creating-blogs-with-jekyll-by-vikram-dhillon">Fundamentals of Jekyll (from the book: &quot;Creating Blogs with Jekyll&quot; by Vikram Dhillon)</h3>
+<h4 id="folder-structure">Folder structure</h4>
+<p>Folders with name syntax <code>_foldername</code> pertain to blog settings.</p>
+<dl>
+<dt><code>_config.yml</code></dt>
+<dd><p>global variables contained in YAML front-matter (e.g. for site-wide colors)</p>
+</dd>
+<dt><code>_drafts</code></dt>
+<dd><p>individual ideas for blog posts contained in GHF markdown files</p>
+</dd>
+<dt><code>_includes</code></dt>
+<dd><p>re-usable blocks of code (such as HTML components); map files to posts using the Liquid tag <code>{% include file.html %}</code></p>
+</dd>
+<dt><code>_layouts</code></dt>
+<dd><p>layout files (really templates) consist of HTML infused with <a href="https://help.shopify.com/themes/liquid/basics">Liquid</a> and handlebars. Layout <code>default</code> is the master layout and takes priority over others. Layout code that needs to be used globally should go in the <code>default</code>. E.g. <code>font-awesome</code>, Bootstrap's collection of vectorized icons which can be added to the header of the <code>default</code> HTML template.</p>
+</dd>
+<dt><code>posts</code></dt>
+<dd><p>contains blog posts and content for filling in templates and layouts. Filenames have to be in the date-filename format, <code>year-month-date-complete_filename.md</code>. Not all files in <code>_posts</code> are posts; the front matter should specify what the file contains.</p>
+</dd>
+<dt><code>_data</code></dt>
+<dd><p>any CSV or JSON formatted (meta)data to be made accessible through the blog using the Liquid templating system. Example: info on authors that write for the blog.</p>
+</dd>
+<dt><code>_site</code></dt>
+<dd><p>populated by Jekyll using the compiled site, which can be served straight to a web server (e.g. Apache)</p>
+</dd>
+<dt><code>index.html</code></dt>
+<dd><p>front page; in Jekyll, typically holds very little information</p>
+</dd>
+</dl>
+<p>Meta-data and instructions about the blog (posts) is stored in variables such as <code>title</code> and <code>description</code> in YAML front-matter. Other variables:</p>
+<ul>
+<li><code>layout</code> specifies the layout file to use</li>
+<li><code>permalink</code> specifies more meaningful permalinks for published blog-posts than the standard Jekyll link format</li>
+<li><code>category</code> specifies the blog post category</li>
+<li><code>tag</code></li>
+<li><code>comments</code></li>
+</ul>
+<p>In another use of YAML, meta-data on authors can be stored in a <code>.yml</code> file in <code>_data</code>. Information contained in YAML is typically implemented (using Liquid) in the <code>head</code> of layout files. Front-matter YAML variable <code>author</code> in a specific blog post specifies for which author in <code>_data/authors.yml</code> meta-data should be loaded in the post's layout file.</p>
+<h4 id="liquid">Liquid</h4>
+<p>Liquid (and the handle bars javascript library) provide blog themes with programmatic access to site data.</p>
+<h5 id="tags">Tags</h5>
+<p>Liquid has the following <em>tags</em>, all of which are wrapped inside <code>{%  %}</code>:</p>
+<ol style="list-style-type: decimal">
+<li>Control-flow tags
+<ul>
+<li><code>if</code> tag<br />
+<code>{% if product.title == 'shoes' %}      These shoes are awesome!    {% endif %}</code></li>
+<li><code>elsif</code> and <code>else</code> tags</li>
+<li><code>case</code>/<code>when</code> tags (work like a switch, comparing a statement against alternatives and performs an action in case of a match) <code>{% case food %}      {% when 'cake' %}        Mmm, cake!      {% else %}        Unknown      {% endcase %}</code></li>
+<li><code>unless</code> tag</li>
+</ul></li>
+<li>Iteration tags
+<ul>
+<li><code>for</code> tag <code>{% for author in site.authors %}      {{ author.display_name }}    {% endfor %}</code></li>
+<li><code>continue</code></li>
+<li><code>break</code></li>
+</ul></li>
+<li>Variable tags
+<ul>
+<li><code>assign</code> <code>{% assign new_variable = false %}</code></li>
+</ul></li>
+<li>Theme tags
+<ul>
+<li><code>include</code>, allows including modular components (stored in the <code>_includes</code> folder) in themes and templates.</li>
+</ul></li>
+</ol>
+<h5 id="objects">Objects</h5>
+<p>Output an object's attribute using: <code>{{ object.attribute }}</code>.</p>
+<ul>
+<li>Objects relevant to Jekyll are
+<ul>
+<li><code>site</code>, representing the entire blog, containing attributes</li>
+<li><code>.pages</code>, a list of all pages</li>
+<li><code>.posts</code>, list of posts in reverse chronological order</li>
+<li><code>.data</code>, data loaded from YAML files in the <code>_data</code> folder</li>
+<li><code>.categories.sample</code>, a list of all posts in category &quot;sample&quot;</li>
+<li><code>.tags.sample</code>, a list of all posts with tag &quot;sample&quot;</li>
+<li><code>page</code>, representing a specific page, containing attributes</li>
+<li><code>.content</code>,</li>
+<li><code>.title</code>,</li>
+<li><code>.excerpt</code>,</li>
+<li><code>.url</code>, returns the post's URL without domain with leading slash</li>
+<li><code>.categories</code>, specified in YAML front matter, derived from directory structure <em>above</em> the <code>_posts</code> directory</li>
+<li><code>paginator</code>, organizes the blog into pages, containing attributes</li>
+<li><code>.per_page</code>, the number of posts per page,</li>
+<li><code>.posts</code>, the posts on a given page,</li>
+<li><code>total_posts</code>,</li>
+<li><code>page</code>, page number</li>
+</ul></li>
+</ul>
+<p>More info on <a href="http://docs.shopify.com/themes/liquid/" class="uri">http://docs.shopify.com/themes/liquid/</a>.</p>
+<h5 id="inheritance">Inheritance</h5>
+<p>Layouts can be inherited using YAML.</p>
+<pre><code>---
+layout: default
+---
+&lt;h1&gt;Testing out a new page&lt;/h1&gt;</code></pre>
+<p>Files can be inherited using <code>include</code>.</p>
+<pre><code>{% include header.html %}
+&lt;h1&gt;Testing below the header&lt;/h1&gt;</code></pre>
+<p>Here, <code>include</code> avoids having to rewrite all the code of the <code>header.html</code> file.</p>
+<h3 id="examples">Examples</h3>
+<p>The remainder of the book &quot;Creating Blogs with Jekyll&quot; is dedicated to example projects that show how the elements covered so far come together.</p>
+<p>Jekyll's Blog-Awareness means that it has built-in support for blog-related features such as</p>
+<ul>
+<li>permalinks</li>
+<li>categories</li>
+<li>pages</li>
+<li>custom layouts</li>
+</ul>
+<p>When trying out the examples listed in the book, you may need to switch between themes. Instead of copy pasting and deleting specific files, use the help in <a href="http://stackoverflow.com/a/37186333" class="uri">http://stackoverflow.com/a/37186333</a>. In short, the process involves</p>
+<ol style="list-style-type: decimal">
+<li>creating a new branch without history (<code>git checkout --orphan newtheme</code>),</li>
+<li>switching to it (<code>git checkout newtheme</code>),</li>
+<li>cleaning it out (<code>git rm -rf .</code>, <code>git clean -dfx</code>),</li>
+<li>adding the theme repo as an &quot;upstream&quot; remote (<code>git remote add upstream &lt;url&gt;</code> i.e., unlike the &quot;origin&quot; remote, you only pull from it, never push to it)</li>
+<li><code>git fetch upstream</code>,</li>
+<li><code>git pull upstream master</code></li>
+<li>Build the theme locally and test it (<code>sudo bundle exec jekyll serve</code>)</li>
+<li>Copy across blog posts from the master branch: <code>git checkout master -- _posts</code> (and perhaps <code>_drafts</code> as well). Rename or remove files leading to conflict (e.g. <code>Gemfile</code>)</li>
+<li>stage and commit changes</li>
+<li>define the merge strategy for merging the new theme branch with the main branch (<code>git merge -s ours master</code>), favoring the new theme's code in case of conflicts</li>
+<li>switch to master branch,</li>
+<li>merge the new theme branch <code>git merge newtheme</code></li>
+<li>push the changes</li>
+<li>clean up the new theme branch</li>
+</ol>
+<h4 id="kactus-theme-nickbalestrakactus">Kactus theme (/nickbalestra/kactus)</h4>
+<ul>
+<li>an <code>assets</code> folder contains styling assets for the blog
+<ul>
+<li>CSS style sheets</li>
+<li>fonts</li>
+<li>images used in blog posts or pages</li>
+<li>JS files pertinent to theme or layout</li>
+</ul></li>
+<li>a <code>feed.xml</code> file contains ATOM feed of blog posts and other changes synchronized over the web</li>
+<li>the <code>_includes</code> folder contains
+<ul>
+<li>a <code>disqus.html</code> file, containing JS code provided by commenting system &quot;Disqus&quot;. Further instructions can be found on the <a href="https://help.disqus.com/customer/portal/articles/472138-jekyll-installation-instructions">Disqus site</a>.</li>
+<li>a <code>footer.html</code> file, containing code for the page's footer (containing Liquid variables)</li>
+<li>a <code>navigation.html</code> file, containing the code for a navigation bar</li>
+<li>a <code>pagination.html</code> file; spreads posts across pages (starting with page 0) and adds &quot;Previous&quot; and &quot;Next&quot; page links.</li>
+<li>a <code>post_list.html</code> file that shows (on the home page) the list of posts: the code in this HTML file is usually present in <code>index.html</code><br />
+</li>
+<li>the <code>profile.html</code> file contains the author's profile, included in every page using the layouts</li>
+<li>the <code>share.html</code> file provides code that allows users to share posts on Twitter or Facebook. Share buttons can be implemented in 3 ways:</li>
+<li>using embed code provided by the social media site</li>
+<li>using embed code obtained through a third-party plugin service (with blog pages linked through an Admin panel)</li>
+<li>completely custom code (used e.g. in the kactus theme): providing a link to the social media site where post can be shared</li>
+</ul></li>
+<li>the <code>_layouts</code> folder containing templates (layouts) that tell Jekyll what to take from the <code>_includes</code> folder and how to integrate it into a web site
+<ul>
+<li>the <code>default.html</code> layout (from which all other layouts inherit)</li>
+<li>the <code>head</code> includes page title and favicon, stylesheets (including for syntax highlighting) and RSS feed</li>
+<li>the <code>body</code> loads include files such as profile, navigation, as well as</li>
+<li>javascript code including JQuery, <code>main.js</code>, <code>highlight.js</code>, a function <code>initHighlightingOnLoad()</code> and Google Analytics.</li>
+<li>the <code>posts.html</code> layout is the template that every post (i.e. file with YAML layout variable set to &quot;post&quot;) will follow and that builds on the default layout</li>
+<li>contains an <code>article</code> tag with class <code>&quot;post&quot;</code>, with inside it a <code>section</code> tag with id <code>&quot;post-body&quot;</code>,</li>
+<li>contains a <code>footer</code> including author's Twitter home, name and site info and loads the code in <code>share.html</code></li>
+<li>contains a <code>div</code> for Disqus comments (if applicable)</li>
+<li>contains the archive post list (as an unstructured list)</li>
+</ul></li>
+<li>the <code>_posts</code> folder containing markdown posts</li>
+<li><code>index.html</code> specifies that the author profile is displayed (YAML: <code>profile: true</code>) and imports <code>post-list.html</code> and <code>footer.html</code></li>
+<li><code>_config.yml</code> allows all parameters (site, page or YAML) for the blog to be defined</li>
+</ul>
+<h4 id="jekyll-themes-and-git">Jekyll themes and Git</h4>
+<p>The theme used in this Chapter will be converted by GitHub Pages to a static website, hosted by GitHub Pages.</p>
+<h5 id="planning-and-designing-a-web-site">Planning and designing a web site</h5>
+<p>A web site project specification covers the following aspects:</p>
+<ol style="list-style-type: decimal">
+<li>Scope
+<ul>
+<li>objective</li>
+<li>audience</li>
+<li>interactivity</li>
+<li>time spent on content versus maintenance</li>
+</ul></li>
+<li>Scale
+<ul>
+<li>how easy will it be to integrate new technology</li>
+<li>mailing list (expanding audience)</li>
+</ul></li>
+<li>Tools list</li>
+</ol>
+<p>Design pointers:</p>
+<ul>
+<li>If examples of similar web sites are available, use those for inspiration.</li>
+<li>Create a prototype post, archive, ... page (e.g. on plain paper) to start analyzing the behavior of your site.</li>
+<li>Prototypes can be used to answer the design questions around scope and scale.</li>
+<li>Then, make a tools list and think about code snippets/include files that are needed to implement them.</li>
+</ul>
+</body>
+</html>

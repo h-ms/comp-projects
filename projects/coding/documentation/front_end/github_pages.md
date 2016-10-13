@@ -81,7 +81,7 @@ Commit and push changes to the site to GitHub using Git.
 
 Run 
 
-    sudo bundle exec jekyll serve
+    sudo bundle exec jekyll serve --host=0.0.0.0
 
 
 ### Intro to Jekyll (from the book: "Creating Blogs with Jekyll" by Vikram Dhillon)
@@ -289,7 +289,7 @@ In short, the process involves
 10. switch to master branch,
 11. merge the new theme branch `git merge newtheme`
 12. push the changes
-13. clean up the new theme branch
+13. delete the new theme branch
 
 
 #### Kactus theme (/nickbalestra/kactus)
@@ -355,7 +355,35 @@ Design pointers:
 * Then, make a tools list and think about code snippets/include files that are needed to implement them.
 
 
+##### Adapting the Kactus theme to a news blog
 
+In the following, make sure to compile changed code to apply changes.
+The "trick" performed here is to display content on the static `index.html` page (using template `default.html` and by-passing dedicated "post" pages).
+
+1.  Enable adding icons from [fontawesome](http://fontawesome.io/get-started/) CDN:
+    Place the fontawesome CSS file link (or: the JS file link) into the layout's `head`. The file that defines the `head` may be in `_includes` or `_layouts`. For theme Kactus, it is in layout file `default.html` (from which all other layout files inherit).
+2.  Add icons to various include files such as `navigation.html` (note however that the use of icons is not necessarily considered good user experience practice)    
+3.  Make changes to the number of posts per page (1) and remove the "profile" page from the blog    
+4.  In the `post-list.html` remove the hyperlinks, as posts should appear on the same page as the post list
+5.  Also, display post content on the post list
+6.  Add share buttons; the code snippet that holds the share buttons goes into the `pagination.html` code which makes for easier spacing. More efficient handling of social media can be achieved using third party service AddThis.
+7.  Add an archive: add the link to the archive in the navigation section of `pagination.html`.
+8.  Write the archive code: this involves looping through the list of posts and separating them according to publication year
+9.  Enable commenting and add the Disqus short name to `_config.yml`. Add the commenting as a property of the "post list" page (as in the new theme blog post appear in "post-list" pages rather than "post" pages). The post-list calls the pagination code: add the `{% include disqus.html %}` code at the end of the navigation bar at the end of the pagination page.
+10. Setup a mailing list (using Mailchimp: "Create a List" menu option and then create a General signup form). The next step is adding subscribe functionality at the top of the page.
+11. Add page and post titles under the top navigation links/arrows in the `navigation.html` code.
+12. Modify the style file in `assets/css/style.css`. Because this folder is not interpreted by Jekyll (it does not start with `_`) CSS code modifications can be tested directly in the browser development tool (F12). Any changes tested should however still be applied to the CSS sheet on file!
+
+
+#### Photo blog
+
+Note that hosting pictures on GitHub is not efficient. Selling photos on the blog creates unnecessary overhead. The solution is to offload the photography on a platform that is meant to share and sell photos (e.g. "500px").
+Jekyll blogs are useful for making a photography portfolio (although slightly more complex than Wordpress).
+
+
+### Jekyll and R code
+
+Section 13.4 (p165) in the book "Dynamic documents with R and knitr, Second Edition" by Yihui Xie explains how to render R input and output for use in Jekyll.
 
 
 

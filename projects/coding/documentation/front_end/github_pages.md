@@ -280,10 +280,10 @@ In short, the process involves
 2. switching to it (`git checkout newtheme`), 
 3. cleaning it out (`git rm -rf .`, `git clean -dfx`),
 4. adding the theme repo as an "upstream" remote (`git remote add upstream <url>` i.e., unlike the "origin" remote, you only pull from it, never push to it)
-5. `git fetch upstream`,
+5. `git fetch upstream` (updates the remote-tracking branch),
 6. `git pull upstream master`
 7. Build the theme locally and test it (`sudo bundle exec jekyll serve`)
-7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). Rename or remove files leading to conflict (e.g. `Gemfile`)
+7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). Also rename or remove files leading to conflict (e.g. `Gemfile`); or check them out from master if they are missing in the new branch.
 8. stage and commit changes
 9. define the merge strategy for merging the new theme branch with the main branch (`git merge -s ours master`), favoring the new theme's code in case of conflicts
 10. switch to master branch,
@@ -379,6 +379,8 @@ The "trick" performed here is to display content on the static `index.html` page
 
 Note that hosting pictures on GitHub is not efficient. Selling photos on the blog creates unnecessary overhead. The solution is to offload the photography on a platform that is meant to share and sell photos (e.g. "500px").
 Jekyll blogs are useful for making a photography portfolio (although slightly more complex than Wordpress).
+
+
 
 
 ### Jekyll and R code

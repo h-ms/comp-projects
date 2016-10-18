@@ -16,7 +16,7 @@ If the second option applies, proceed as follows:
 2.  Clone the repository to your local git environment. 
     When working in CodeAnywhere, every container by default is configured to be a git repository as well.
     Cloning `username.github.io` into the container's working dir would thus create a repository inside a repository.
-    To prevent this, create a CodeAnywhere container that is a "connection" to the `username.github.io` repository:
+    To prevent this, create a CodeAnywhere container that has a "connection" to the `username.github.io` repository:
     this will automatically set the value of the remote repository to GitHub's `username.github.io`.
 3.  Create an `index.html` file in the `workspace` directory (the same directory that also contains the `.git` folder.
 4.  Add the file to the staging area and commit.
@@ -28,7 +28,7 @@ Improving and customizing GitHub webpages is covered in the next main section
 
 ### Project site
 
-Create a GitHub site from scratch based on an existing project (repository).
+Create a GitHub site from scratch based on an existing project (repository). When starting from scratch, the workflow is as follows:
 
 1.  Create a new file and call it `index.html`
 2.  Add some content
@@ -36,6 +36,8 @@ Create a GitHub site from scratch based on an existing project (repository).
 4.  If working locally, push the commit to the remote repository
 5.  In the project's `Settings` tab, go to GitHub pages and select `master branch` in the `Source` field
 6.  View the result on `https://username.github.io/projectname/`
+
+When creating pages for an existing project, branch `gh-pages` is used by the automatic page generator (see "GitHub Pages" in the "Settings" menu)
 
 
 ## Using Jekyll as a static site generator
@@ -277,18 +279,18 @@ When trying out the examples listed in the book, you may need to switch between 
 In short, the process involves 
 
 1. creating a new branch without history (`git checkout --orphan newtheme`), 
-2. switching to it (`git checkout newtheme`), 
+2. switching to it (`git checkout newtheme`, make sure this switch is executed!), 
 3. cleaning it out (`git rm -rf .`, `git clean -dfx`),
 4. adding the theme repo as an "upstream" remote (`git remote add upstream <url>` i.e., unlike the "origin" remote, you only pull from it, never push to it)
 5. `git fetch upstream` (updates the remote-tracking branch),
 6. `git pull upstream master`
-7. Build the theme locally and test it (`sudo bundle exec jekyll serve`)
-7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). Also rename or remove files leading to conflict (e.g. `Gemfile`); or check them out from master if they are missing in the new branch.
+7. Build the theme locally and test it (`sudo bundle exec jekyll serve`); check out the `Gem` files from the master branch if they are missing in the new branch.
+7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). Also rename or remove files leading to conflict (e.g. `Gemfile`)
 8. stage and commit changes
 9. define the merge strategy for merging the new theme branch with the main branch (`git merge -s ours master`), favoring the new theme's code in case of conflicts
 10. switch to master branch,
 11. merge the new theme branch `git merge newtheme`
-12. push the changes
+12. add, commit, push the changes
 13. delete the new theme branch
 
 
@@ -380,7 +382,69 @@ The "trick" performed here is to display content on the static `index.html` page
 Note that hosting pictures on GitHub is not efficient. Selling photos on the blog creates unnecessary overhead. The solution is to offload the photography on a platform that is meant to share and sell photos (e.g. "500px").
 Jekyll blogs are useful for making a photography portfolio (although slightly more complex than Wordpress).
 
+Based on the Project Specification (containing scope, scale, To do's and tools) and a sketch/prototype, theme "DopeTrope" was selected for this site.
 
+    "The the essence of the freemium model: You attract readers to your blog with free content and embed your own pictures at the end of the post. The readers are eventually converted into paid
+    users of that photography."
+    
+    
+
+##### Adapting the DopeTrope theme to a photo blog
+
+1.  Change the main title. Start looking in `index.html`; there is an include `header_landing.html` that sets an `h1` header with the blog title: change this title.
+2.  `header_landing.html` further defines a navigation bar for `index.html`. Note that the `nav.html` include file also contains a navigation element intended for other page layouts (e.g. `left-sidebar.html`). Shorten the navigation bar to only include "Home", "Blog", "Specialties" and "Subscribe" elements.
+3.  The next part of the header is the banner which gives an impression of the portfolio; change the text as appropriate
+4.  The "features" `section` (id "intro") in the next part of the header needs to be moved to a separate page where it can be shown without accompanying blog and footer; create a layout that does not include blog and footer but does include specifically the `header_landing` include file with its "features" section. Create a new page ("Features") that uses this new layout. Remove the "Features" from `index.html` by creating a new version of the `header_landing` include file that excludes the "Features"
+5.  Create a new page listing the blog posts using existing code in `no-sidebar.html`
+6.  Remove the blog from the `landing.html` template while adding two closing `div` tags to `index.html` (which used to be taken care of in the `blog.html` include)
+7.  Modify the blog post page (`posts.html`): modify `nav.html` to make it similar to the navigation in `header_landing`
+8.  Modify the posts in the `_posts` folder: remove the image link in the YAML header and add category `pinned` to each of them; in the `footer.html` only show posts with category `pinned`: `{% for post in site.categories.pinned offset: 0 limit: 3 %}`
+9.  Embedding images from a photography site requires constraining the size of the images: use `http://embed.ly/code`
+10. Add links to blog posts and features to the navigation block in the `header_landing_new.html`, `nav.html` and `header_landing_new.html` codes
+11. Add the sign-up form link (generated in MailChimp) to the subscribe button on the navigation bar.
+
+The modular implementation of these Jekyll blogs makes them very customizable. On the other hand, it is not directly evident how include files, layouts and top-level pages are interlinked.
+
+Professional photos hosted on a regular web site take too long to load. Instead of hosting them on dedicated sites like "500px" they can be served using a **Content Delivery Network** (CDN).
+A CDN serves static content to users with high performance. The content is requested at the same time as the web page is loaded. CDNs resolve to an optimized server based on location of the user and availability of the server.
+Most portfolios rely on some kind of CDN. CDNs also offer SSL encryption and DDOS protection.
+
+
+#### Debate platform
+
+Along the lines of an Oxford-style debate:
+*   two speakers, a moderator, participants
+*   one speaker defends a proposition, the other opposes it
+
+The inspiration comes from the "Debates" pages in "The Economist" (which is a closed platform unlike the Jekyll platform in this chapter, which is open source).
+
+##### GitHub walk-through
+
+**Pull requests** are the only proper way to contribute to open source projects in GitHub. Pull requests are issued after forking and adding to a repository. The commits to be submitted should be described clearly.
+**GitHub pages** is an automatic page generator that, for existing projects, uses branch `gh-pages`. This feature can be used to create a landing page for a repo.
+When repo `username.github.io` is selected, GitHub pages automatically converts that repository into a website and includes any Jekyll content in the compilation process. 
+
+> A custom domain can be supplied for a web site created with GitHub Pages. GitHub will redirect to this custom domain.
+
+Two types of redirect exist: subdomains and apex domains. 
+
+Terminology:
+
+1.  subdomains, e.g. `subdomain.example.com`
+2.  primary domains (top-level domains), e.g. `example.com`
+3.  project directory, e.g. `example.com/project`
+4.  apex domains (top-level domains so called by GitHub to refer to redirects), 
+
+*   Organization pages are redirected to apex domains: a `CNAME` file in the GitHub repo and the "zone" file of the custom domain are involved in making the redirect happen.
+    *   Create a `CNAME` file in the GitHub repository containing the top-level domain name of the domain to redirect to.
+    *   Create "A" records in the DNS Zone file to resolve to the following IP addresses: `192.30.252.153` and `192.30.252.154` (`https://help.github.com/articles/setting-up-an-apex-domain/#configuring-a-records-with-your-dns-provider`) 
+*   Project pages are redirected either to a subdomain or to an independent domain. If an organization site exists, projects default to being subdomains of the organization site
+*   To make a project redirect to an independent domain:
+    *   On the repository side, create a `CNAME` file with the domain name
+    *   On the DNS side, create a `CNAME` record (with name, type and value: `blog`, `CNAME` and `username.github.io.`) and an `A` record ([blank], `A` and `192.30.252.153`)
+*   To make a project redirect to a subdomain: 
+    *   On the repository side, create a `CNAME` file with the subdomain name
+    *   On the DNS side, create a `CNAME` record (`blog`, `CNAME` and `username.github.io.`)
 
 
 ### Jekyll and R code

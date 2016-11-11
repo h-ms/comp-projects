@@ -279,13 +279,12 @@ When trying out the examples listed in the book, you may need to switch between 
 In short, the process involves 
 
 1. creating a new branch without history (`git checkout --orphan newtheme`), 
-2. switching to it (`git checkout newtheme`, make sure this switch is executed!), 
-3. cleaning it out (`git rm -rf .`, `git clean -dfx`),
-4. adding the theme repo as an "upstream" remote (`git remote add upstream <url>` i.e., unlike the "origin" remote, you only pull from it, never push to it)
-5. `git fetch upstream` (updates the remote-tracking branch),
-6. `git pull upstream master`
-7. Build the theme locally and test it (`sudo bundle exec jekyll serve`); check out the `Gem` files from the master branch if they are missing in the new branch.
-7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). Also rename or remove files leading to conflict (e.g. `Gemfile`)
+2. cleaning it out (`git rm -rf .`, `sudo git clean -dfx`),
+3. after removing any existing `upstream` url, add the theme repo as an `upstream` remote (`git remote add upstream <url>` i.e., unlike the "origin" remote, you only pull from it, never push to it)
+4. `git fetch upstream` (updates the remote-tracking branch),
+5. `git pull upstream master`
+6. Check out the `Gem` files from the master branch, then build the theme locally and test it (`sudo bundle exec jekyll serve`); 
+7. Copy across blog posts from the master branch: `git checkout master -- _posts` (and perhaps `_drafts` as well). 
 8. stage and commit changes
 9. define the merge strategy for merging the new theme branch with the main branch (`git merge -s ours master`), favoring the new theme's code in case of conflicts
 10. switch to master branch,
@@ -445,6 +444,82 @@ Terminology:
 *   To make a project redirect to a subdomain: 
     *   On the repository side, create a `CNAME` file with the subdomain name
     *   On the DNS side, create a `CNAME` record (`blog`, `CNAME` and `username.github.io.`)
+
+
+Objectives of prototyping
+
+*   Help visualize the end product. The prototype guides the search for an editable theme ("you almost never want to start from absolutely nothing").
+*   Model the site's behaviour and workflows using a storyboard: capture transitions going from one step (page) to the next.
+
+
+The purpose of **Jekyll Collections** is to facilitate
+
+*   organizing topics/debates/posts 
+*   automatically updating/reassigning links when a new topic/debate/post is added (so called "routing", which is the topic of advanced frameworks like "Ember.js" and "Angular.js")
+
+
+Jekyll routing mechanisms involve:
+
+*   primitive-type routing preset, which creates links at compilation
+*   derived-type routing relying on YAML (permalink) and Liquid (inheritance, includes)
+*   "collections": sets of interrelated documents with custom properties that behave like a post or page
+
+Collections are created by
+
+*   adding a new folder with the name of the collection (`_collection`)
+*   specify the folder in `_config.yml` along with optional variables. Example:
+
+~~~
+collections:
+         new_debate:
+           output: true               # every page in the collection is an html file
+           permalink: /new_debate/:path/ # routing and permalink for each page
+~~~
+
+In this example, every debate represents a new collection, accessible via e.g. `/new_debate/index.html`.
+
+
+##### Editing the Debate theme
+
+*   Modify navigation: make two bars (one to navigate to the debates, another to navigate within each debate).
+    To create the second bar, a global variable is required that can be set to the debate that is the "current" debate.
+    It is further assumed that each debate in the collection has the same set of pages (debate phases)
+*   Show the current debate
+*   List previous debates by looping over the debates (collections) and displaying links for all of them
+*   Make the header image appear with the appropriate text
+
+The heavy use of third-party clienttools in Jekyll blogs is related to the fact that no server-side programming can be done
+as Jekyll creates static pages.
+    
+
+
+#### Open research
+
+##### Planning
+
+Functionality to be embedded in the theme:
+
+1.  KaTeX, a minimal LaTeX distribution (using source files)
+2.  Plotlyjs, a graph drawing tool (using a CDN file)
+3.  Bibliography (bibtex), parsed by Javascript
+4.  An Ipython notebook, displayed on the blog and in `nbviewer`
+5.  `Reveal.js`, a slide tool: download files to submodule (a Git repository inside the Jekyll blog Git repository), add settings as YAML front matter.
+
+Any tool that is embedded into the theme needs to be instantiated, typically using a `div` tag.
+
+
+##### Implementation
+
+*   Install the files for Jekyll theme ["clean blog"](http://jekyllthemes.org/themes/clean-blog/).
+*   Load and instantiate `KaTeX`
+
+
+
+##### Git command line
+
+A review of Git command line functions is given.
+
+
 
 
 ### Jekyll and R code

@@ -511,8 +511,17 @@ Any tool that is embedded into the theme needs to be instantiated, typically usi
 ##### Implementation
 
 *   Install the files for Jekyll theme ["clean blog"](http://jekyllthemes.org/themes/clean-blog/).
-*   Load and instantiate `KaTeX`
-
+*   Load and instantiate `KaTeX`:
+    *   Copy files `katex.min.css` and `katex.min.js` from https://github.com/khan/katex/releases to new Jekyll folder `public`
+    *   Load the files in `head.html` (in `_includes`) using `link` and `script` tags, respectively
+    *   Instantiate by adding javascript code that tells all blog posts to render `KaTeX` code properly:
+        JS code is added to a module `render_katex.html` in the `_includes` folder which is then called by the post layout file (at the start of `{{ content }}`.
+*   Test by adding an equation to one of the posts. Add Liquid escape "character" `{% raw %}` and `{% endraw %}` around the `div` element that includes
+    the equation (given by attribute `data-expr`).
+*   Load and instantiate `Plotly.js`
+    *   Add a link to the Plotly application in `head.html`
+    *   In a blog post, add a canvas (a `div` block with pre-specified dimensions)
+    *   Add JS code for a Plotly graph and link it to the canvas.
 
 
 ##### Git command line

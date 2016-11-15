@@ -533,6 +533,11 @@ Any tool that is embedded into the theme needs to be instantiated, typically usi
     with `projects` referring to the base name of the YAML file. For bibtex information, this is not efficient as it takes a lot of work to parse and render each
     bibtex entry. A plug-in (`jekyll-scholar`) designed entirely for bibliographic purposes will be the best option to display a bibliography.
 *   iPython notebooks (`ipynb` files) render directly on GitHub (they are translated to markdown): read [here](http://blog.jupyter.org/2015/05/07/rendering-notebooks-on-github/).
+    No code demo is presented in the book.
+*   Add `reveal.js` to the project as a Git sub-module: `git submodule add https://github.com/hakimel/reveal.js.git`, then, create a layout that achieves the following:
+    *   import the `reveal.js` files to the right place
+    *   supply `reveal.js` with configuration details
+    Then, create a blog post and put `slide` in the YAML layout. The output is a slide show.
     
     
 

@@ -522,6 +522,19 @@ Any tool that is embedded into the theme needs to be instantiated, typically usi
     *   Add a link to the Plotly application in `head.html`
     *   In a blog post, add a canvas (a `div` block with pre-specified dimensions)
     *   Add JS code for a Plotly graph and link it to the canvas.
+*   Parse a bibliography (bibtex to HTML) and render it (styling it using CSS) on a separate blog **page**:
+    *   load `jquery`,
+    *   load `bibtex_js.js`
+    *   load the bibtex bibliography (use a liquid `include` tag to load the file as a module),
+    *   render the bibliography in a dedicated `div` box; also add a separate `div` box containing an HTML template.
+    Note: the `bibtex_js.js` file does not render the bibliography correctly in the Chrome browser.
+    Note: the correct JS file makes sure `jquery` is loaded on every page used by `bibtex_js`. A usable version of the JS file is added to this code documentation Git repository. 
+    Data can also be saved in YAML formatted files in the `_data` folder: entries in the YAML file can be programmatically accessed using the Liquid variable  `site.data.projects`,
+    with `projects` referring to the base name of the YAML file. For bibtex information, this is not efficient as it takes a lot of work to parse and render each
+    bibtex entry. A plug-in (`jekyll-scholar`) designed entirely for bibliographic purposes will be the best option to display a bibliography.
+*   iPython notebooks (`ipynb` files) render directly on GitHub (they are translated to markdown): read [here](http://blog.jupyter.org/2015/05/07/rendering-notebooks-on-github/).
+    
+    
 
 
 ##### Git command line

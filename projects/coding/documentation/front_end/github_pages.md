@@ -532,7 +532,8 @@ Any tool that is embedded into the theme needs to be instantiated, typically usi
     Data can also be saved in YAML formatted files in the `_data` folder: entries in the YAML file can be programmatically accessed using the Liquid variable  `site.data.projects`,
     with `projects` referring to the base name of the YAML file. For bibtex information, this is not efficient as it takes a lot of work to parse and render each
     bibtex entry. A plug-in (`jekyll-scholar`) designed entirely for bibliographic purposes will be the best option to display a bibliography.
-*   iPython notebooks (`ipynb` files) render directly on GitHub (they are translated to markdown): read [here](http://blog.jupyter.org/2015/05/07/rendering-notebooks-on-github/).
+*   iPython notebooks (`ipynb` files) render directly on GitHub (they are translated to markdown): read [here](http://blog.jupyter.org/2015/05/07/rendering-notebooks-on-github/)..
+    Further reading [here](http://www.nature.com/news/interactivenotebooks-sharing-the-code-1.16261). 
     No code demo is presented in the book.
 *   Add `reveal.js` to the project as a Git sub-module: `git submodule add https://github.com/hakimel/reveal.js.git`, then, create a layout that achieves the following:
     *   import the `reveal.js` files to the right place
@@ -541,8 +542,12 @@ Any tool that is embedded into the theme needs to be instantiated, typically usi
     
     
 
+#### Open Jekyll (last chapter)
 
-##### Git command line
+
+
+
+#### Git command line
 
 A review of Git command line functions is given.
 

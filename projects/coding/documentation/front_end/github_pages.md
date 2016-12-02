@@ -544,6 +544,141 @@ Any tool that is embedded into the theme needs to be instantiated, typically usi
 
 #### Open Jekyll (last chapter)
 
+This chapter covers the concepts of:
+
+*   plug-ins (including Jekyll compilation to include plug-ins), 
+*   Ruby, 
+*   Continuous Integration,
+*   secure keys, 
+*   automating the build process,
+
+Integration of technologies into Jekyll may occur on two levels:
+
+*   overlay assets layer (overlaid on an existing Jekyll skeleton): integrations into this layer are achieved with Liquid's `include` mechanism and are compatible with GitHub.
+*   shared features layer (core Jekyll funcitonality, not covered in previous chapters)
+
+GitHub will not build Jekyll blogs that use custom plug-ins: due to security concerns, GitHub uses the `--safe` Jekyll build flag. As a work-around,
+build the blog locally and push the static files (in the `_site` folder) to GitHub.
+
+
+##### Project: "Jekyll Design Studio"
+
+This chapter's project consists of a web site that is a blog design studio (it builds and sells custom Jekyll implementations). Features include:
+
+1.  a parallel advertising platform (Fiverr)
+2.  a shopping cart (Snipcart)
+3.  pre-order and subscription functionalities (Gumroad)
+4.  video ads (Youtube, Wistia)
+5.  donations (Youtube)
+6.  mock-ups and demos (InVision)
+7.  add live embeds of demos (embed.ly) 
+8.  live customer support (Hipchat)
+9.  password-protected web products (Aerobatic)
+10.  create custom Jekyll plug-ins
+11.  automate compilation of custom Jekyll builds
+12.  continuous integration: compile the design studio every time a change is made to ensure all plug-ins are always integrated (Codeship).
+     Automatic rebuilds are created by "build tools" which use specific files supporting the build process. The resulting rebuilt site is placed
+     back in the same location as the original.
+
+##### Ruby
+
+Ruby is dynamically typed (user does not need to specify the object's type) and object-oriented.
+Ruby on Rails is the backbone of GitHub.
+The online interpreter software used in this chapter to learn and play around with Ruby is `repl.it`.
+Note: Ruby and Liquid syntaxes are very different.
+
+**Basics**
+
+*   primitive data types are integer, boolean and string
+*   function `puts` works like `print` but adds a newline to the output
+*   reading in a string from standard input and assigning to variable: `phrase = gets.chomp`
+*   string concatenation: `"this is" + my_text_var`
+
+*   everything is an object: properties and methods of objects are accessed by adding their names after the object, separated by "`.`"
+*   methods operating on an object can be concatenated ("chaining")
+*   an exclamation mark after a method indicates the method will change the object it was called on
+
+*   `if` statements can be followed by `else if`, `else` and always end with `end`. Statements following the condition are indented.
+*   short-hand conditional evaluation is achieved using `.includes?` followed by (optionally `else` and) `end`
+*   `unless` works similarly to `if`, with opposite meaning
+*   `until` loops are the opposite to `while` loops: both end with `end`
+*   the condition in `for` loops may include `..` which includes the higher number, or `...` which excludes the higher number: e.g. `for i in 1...10` excludes 10.
+    Break out of a loop using `break if` (which uses no separate `end`)
+
+*   arrays are lists of items (index starts with 0): `[12, "ash", 24, 2]`
+*   the array index often is a counter in loops
+*   a `do` loop (similar to a `for` loop) specifies a counter variable in between `| |`:
+~~~
+        my_array.each do |item|
+            puts item
+        end
+~~~
+*   hashes are arrays that can be indexed by any type of object (not only integers); they are lists of key-value pairs separated by `=>` or `:` and surrounded by curly braces:
+~~~
+        my_hash = {
+            key1 => value1,
+            key2 => value2
+            }
+~~~
+    The `do` loop now functions as follows:
+~~~
+        my_hash.each do |key, value|
+            puts key + ": " + value
+        end
+~~~
+*   add a new element to a hash: `my_hash[key3] = value3`
+*   the `select` method works on hashes as follows, e.g.: `.select { |name, rating| rating > 2 }`, where `name` represents the key and `rating` the value
+
+**Methods and classes**
+
+*   a function definition consists of a header, body and ending
+*   a function can be defined with an undefined number fo arguments through the use of "splat" arguments:
+~~~
+        def what_up(greeting, *bros)
+          bros.each do |bro|
+            puts "#{greeting}, #{bro}!"
+          end
+        end
+~~~
+*   the use of `#{}` indicates a placeholder for the string argument to be passed
+*   a method can return a boolean which can then be used in further calculations, e.g.: `return true`
+*   Jekyll plug-ins contain numerous methods that work together to provide functionality
+*   Creating a class using the `initialize` method (the "constructor"), as well as adding methods for the class:
+~~~
+class Person
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+  def about
+    puts "I'm #{@name} and I'm #{@age} years old"
+  end
+  def account
+    @number = 12345
+    puts "My bank account number is #{@number}"
+  end
+end
+~~~
+*   Constructing a new object of class `Person`: `Jim = Person.new("Jim", 20)`: `new` looks for a method `initialize` to construct an object of class `Person`. Class names by convention start with a capital letter
+*   The line of code above illustrates "declaration" of a new variable (`Jim`), "instantiation" of a new object of a certain class (`Person.new`) and "initialization" of properties of the object
+*   `@variable` represents an instance variable, which is available everywhere in the class
+
+
+##### Ruby Gems
+
+A gem is a library of classes that together provide a well-described piece of functionality. Jekyll is an example of a gem.
+Libraries are distributed using packages. Ruby's package manager is RubyGems. Command-line access to RubyGems is provided using the `gem` command.
+Object `ri` is the Ruby index, which is Ruby's help documentation.
+The library can be called from the command line, outside of `ruby`, just by calling its name.
+
+Just like a javascript file can be made a dependency for a Jekyll project, other gems can be dependencies too.
+A Ruby **Gemfile** defines the dependencies required by a project.
+
+Jekyll itself requires a number of dependencies to work. When Jekyll is installed, these are installed at the same time using information in the Gemfile.
+Create a Jekyll blog project from scratch in folder `myblog`:
+
+*   `jekyll new myblog` where `myblog` may be the current folder
+
 
 
 

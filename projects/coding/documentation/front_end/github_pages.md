@@ -48,7 +48,7 @@ With Ruby available, install Jekyll as follows (tested in CodeAnywhere with Ubun
 
 Install Bundler:
 
-    sudo gem install bundler
+    gem install bundler
 
 Create a Gemfile in the local git repository.
 Add the following code to a text file called `Gemfile`.
@@ -58,12 +58,12 @@ Add the following code to a text file called `Gemfile`.
     
 Install Jekyll and other dependencies from the GitHub Pages gem:
 
-    sudo bundle install
+    bundle install
     
 
 ### Generate Jekyll site files
 
-Create a Jackyll template site as follows:
+Create a Jekyll template site as follows:
 
     bundle exec jekyll new . --force
 
@@ -72,7 +72,7 @@ The output should say something like: `New jekyll site installed in /home/cabox/
 Edit your Gemfile and remove the following line: `"jekyll", "3.2.1"`.
 Uncomment the following line by removing the `#`: `gem "github-pages", group :jekyll_plugins`
 
-The above locks the Jekyll version to that used by GitHub pages.
+The above two actions locks the Jekyll version to that used by GitHub pages.
 
 Use `sudo bundle update github-pages` to update to the version run by HitHub pages.
 
@@ -677,7 +677,177 @@ A Ruby **Gemfile** defines the dependencies required by a project.
 Jekyll itself requires a number of dependencies to work. When Jekyll is installed, these are installed at the same time using information in the Gemfile.
 Create a Jekyll blog project from scratch in folder `myblog`:
 
-*   `jekyll new myblog` where `myblog` may be the current folder
+*   `jekyll new myblog` where `myblog` may be the current folder.
+*   Jekyll blogs can be compiled (`jekyll build`) with the compiled blog being saved in the `_site` folder. `jekyll build --watch` (which runs in the foreground) auto-rebuilds if changes are made to the blog.
+*   The blog can be **compiled and served** locally on port `4000` using `jekyll serve`: this process also runs in the foreground and auto-rebuilds the site if changes are made.
+*   The contents of `_site` can be removed using `jekyll clean`.
+
+Jekyll version control is demonstrated on another platform than GitHub (BitBucket in the book). In addition, the site is compiled using Codeship (implementing continuous integration) and OAuth authenticates communications.
+OAuth uses principles similar to SSH authentication: the public key of a publicate-private key pair is distributed to services the user wants access to. Access is given provided the private key matches the public key.
+
+Push the site created using the `jekyll new` command to a repository on Gitlab.
+
+Codeship, or any other build tool, requires
+
+*   dependencies or gems to be downloaded 
+*   access to the repository containing the Jekyll sources
+
+**Bundler** is a dependency management program for Ruby projects that is available in Codeship. 
+It facilitates plug-in management, saving the user the effort of having to download and update plug-ins manually.
+It requires:
+
+*   the `_config.yml` file (specifically the line starting with `gems:` containing an array of gems) and
+*   the `Gemfile`, specifiying which gems (including Jekyll itself) are required and which versions
+
+>   The `Gemfile` instructs `bundler` which gems to download; `_config.yml` instructs Jekyll to use those plug-ins.
+
+
+From the user site, there is minimal interaction with the plug-ins. Plug-ins function similar to e.g. javascript imports in that the user can expect a plug-in-specific syntax to function out of the box.
+
+**Rake** is Ruby's "make" (also available in Codeship), a batch tool that takes a makefile to compile an application.
+In this project, Rake is used to:
+
+*   access Gitlab repository,
+*   download the remote repo code to a temporary location
+*   compile and store in the `_site` folder
+*   pushing the code from `_site` back to the remote location, keeping Git tags in sync (the version on the remote repo is always the latest)
+    Note that the build tool works on the remote repo, not on a local one: this is a must if Jekyll is to be built in different customizations for a host of customers.
+
+The Codeship compiler uses Rake to automate the compilation process.
+
+
+##### Continuous Integration
+
+Deployment pipeline:
+
+1.  New features/commits are checked in to a remote repository (as pushed commits)
+2.  Automated build tools verify the checked-in feature/commit and recompile the project (e.g. Jekyll site); 
+    this is done with the help of "commit hooks" that Codeship has set up. The hooks listen for "commit" events and trigger a rebuild by bundler and rake
+3.  The compiled project is pushed back to the remote repository as a new commit
+
+Set up the pipeline:
+
+1.  Couple Codeship to the Gitlab account (powered by OAuth)
+2.  Select the repository
+3.  Select the build environment (Ruby)
+    *   `bundle install` will download the gems listed in the Gemfile
+    *   Configure `Rake`: set up a hook for the master branch and select `Rake` (i.e. "custom script") as the process carrying out deployment.
+    *   Run the following two `rake` commands that will execute the tasks defined in the Rake file
+            rake generate
+            rake publish
+        The script is then run on the next push to the master branch
+4.  Obtain the public SSH key from Codeship and add it to GitLab.
+    Note: 
+    > "When you register with Codeship and configure your repository to be used in the deployment pipeline,
+    > Codeship automatically adds the SSH key corresponding to your account. The problem is that
+    > this key is added as a **deployment key**, meaning that it has read-only access to your account. We need write
+    > access as well, and to do that, we must first remove the deployment key. [...] then add the public SSH key to
+    > the Bitbucket account so that the key shows up under SSH keys"
+
+The Jekyll site is served to the user with Aerobatic (when using Bitbucket as repo) or Gitlab Pages (if Gitlab is your repo).
+*Codeship pushes the compiled site back to a new branch where it will be served*: This will keep the source code free from
+the hosting production code.
+
+##### Gitlab pages
+
+In contrast to hosting on GitHub, serving pages on Gitlab requires that a daemon in installed on a dedicated domain.
+As Continuous Integration is also available from Gitlab, it makes sense to have sites hosted with CI from Gitlab.
+CI requires that a `.gitlab-ci.yml` file is created in the repo root. This YAML file will contain 
+
+Switch to Gitlab
+
+*   Create two containers in one box: `h-ms.gitlab.io` and gitlabserve, with `h-ms.gitlab.io` pointing to the Gitlab repo and gitlabserve a ruby box with "always on" enabled
+
+On the `h-ms.gitlab.io` container:
+
+1.  Update and upgrade `apt-get`
+2.  Update ruby using `rvm install 2.3.2`
+3.  `gem install bundler` to install bundler (1.13)
+4.  Install gems required for Jekyll setup with `bundle install` using a simple Gemfile containing `gem "jekyll", "3.3.1"` and `gem "minima"`
+
+SSH key does not require renewal as the key used is the default SSH key for all Codeanywhere boxes.
+The URL for the Jekyll site is still `url: "http://h-ms.github.io"`. Modify this to serve using Gitlab Pages.
+
+On the gitlabserve box, run steps 1-2 only.
+
+
+##### Implementing the design studio
+
+*   Install the "solid" theme; clean the `_site` folder after testing (the `master` branch should be free of hosting code)
+*   Advertisement (Fiverr, Gumroad, Youtube, Wistia)
+*   Deployment (Bitbucket/Gitlab, Codeship)
+*   Plug-ins
+*   Shopping cart (Snipcart, Stripe, Helium)
+*   Prototyping (InVision)
+*   Cards (Youtube, Wistia)
+*   Customer support (Hipchat)
+
+Test that plug-ins can be added to the blog:
+
+Gemfile (installs Jekyll and other Ruby gems in the build box):
+
+~~~
+source 'https://rubygems.org'          # Source of gems
+gem 'jekyll', '~> 3.2'                 # First gem to install is Jekyll
+group :jekyll_plugins do               # Next is a group of jekyll plug-ins
+       gem "jekyll-less"               # Jekyll-less plug-ins: converts LESS syntax to CSS
+       gem 'therubyracer', '~> 0.12.2' # A dependency for jekyll-less plug-in
+end
+
+~~~
+
+Rakefile
+
+~~~
+require 'tmpdir'                               # Create a temporary directory
+desc "Generate jekyll site"                    # First task, generate the Jekyll site
+task :generate do
+  puts "## Generating Site with Jekyll"
+  system "jekyll build"                        # System command to build Jekyll
+end
+desc "Generate and publish blog to Bitbucket"
+task :publish do                               # Publish Jekyll site to Bitbucket
+  Dir.mktmpdir do |tmp|                        # Creating a temporary dir to move contents of _site
+    system "mv _site/* #{tmp}"                 # Moving contents of _site
+    system "git checkout -b publish"           # A new branch to push result back to
+    system "rm -rf *"                          # Cleaning up
+    system "mv #{tmp}/* ."
+    system 'git config --global user.email "user@email"'
+    system 'git config --global user.name "username"'
+    system "git add ." # Authenticating and pushing the code back
+    system "git commit -am 'Codeship Update'"
+    system "git remote add glab git@gitlab.com:h-ms/blog.git"
+    system "git push -f glab publish"
+  end
+end
+
+~~~
+
+Add the following plug-ins to `_config.yml`
+
+~~~
+gems: ['jekyll-less', 'therubyracer']
+~~~
+
+And add a test file (`test.less`) written in LESS that the plug-in should help compile to a CSS file.
+
+~~~
+@base: #f938ab;
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  -webkit-box-shadow: @style @c;
+  box-shadow: @style @c;
+}
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+.box {
+  color: saturate(@base, 5%);
+  border-color: lighten(@base, 30%);
+  div { .box-shadow(0 0 5px, 30%) }
+}
+
+~~~
+
 
 
 

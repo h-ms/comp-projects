@@ -121,7 +121,7 @@ RStudio server is installed and can be accessed on port 8787. `rstudio-server st
 The following creates a password for user `cabox` with password `rstudio`.
 
 ~~~
-    sudo sh -c "passwd cabox <<EOF  
+    sudo sh -c "passwd cabox <<EOF
     rstudio
     rstudio
     EOF"
@@ -132,6 +132,8 @@ The following creates a password for user `cabox` with password `rstudio`.
 ~~~
 sudo wget https://github.com/jgm/pandoc/releases/download/1.15.2/pandoc-1.15.2-1-amd64.deb
 sudo gdebi -n pandoc-1.15.2-1-amd64.deb
+sudo wget https://github.com/jgm/pandoc/releases/download/1.19.1/pandoc-1.19.1-1-amd64.deb
+sudo gdebi -n pandoc-1.19.1-1-amd64.deb
 ~~~
 
 

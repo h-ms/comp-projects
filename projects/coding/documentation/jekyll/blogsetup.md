@@ -1,4 +1,6 @@
-# Setting up a blog skeleton with Jekyll, Pixelarity, CodeAnywhere and Gitlab
+# Setting up a blog with Jekyll, Pixelarity, CodeAnywhere and Gitlab
+
+The setup will be similar to <http://www.thedatagent.com/2016/11/29/using-rmarkdown-and-jekyll/>.
 
 ## Gitlab project
 
@@ -59,33 +61,26 @@ Alternatively, a free theme may be obtained, for example from <`http://jekyllthe
 1.  Clean the build directories `_site` and `.sass-cache` (`jekyll clean`)
 2.  Create a `.gitignore` file containing `Gemfile.lock`
 3.  In the blog project root, add a file `.gitlab-ci.yml` and add the following instructions:
-        image: ruby:2.3
-        pages: 
-          script: 
-          - gem install bundler
-          - bundle install
-          - bundle exec jekyll build -d public/ 
-          artifacts: 
-            paths: 
-            - public 
-          only: 
-          - master
+            image: ruby:2.3
+            pages: 
+              script: 
+              - gem install bundler
+              - bundle install
+              - bundle exec jekyll build -d public/ 
+              artifacts: 
+                paths: 
+                - public 
+              only: 
+              - master
 4.  Configure the Gitlab repository to be the remote repository (`git remote add git@gitlab.com:h-ms/h-ms.gitlab.io.git`)
 5.  Add, commit and push the repository
 6.  Check that the website is online at <https://h-ms.gitlab.io/>.
 
-<!-- To do: check that the website is actually secure -->
-
 
 #### Adding a custom domain
 
-<!-- To do -->
-
-
-#### Adding CDN
-
-<!-- To do -->
-
+Follow "Settings", "Pages", "New Domain" and add the custom domain name.
+Add an `A` record to the domain's control panel, pointing to Gitlab server `104.208.235.32`.
 
 
 

@@ -1,4 +1,3 @@
-
 # GitHub pages
 
 [This tutorial](https://pages.github.com/) shows how to publish a webpage on GitHub pages.

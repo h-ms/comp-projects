@@ -16,7 +16,7 @@
 <p>If the second option applies, proceed as follows:</p>
 <ol style="list-style-type: decimal">
 <li>Create a repository called <code>username.github.io</code></li>
-<li>Clone the repository to your local git environment. When working in CodeAnywhere, every container by default is configured to be a git repository as well. Cloning <code>username.github.io</code> into the container's working dir would thus create a repository inside a repository. To prevent this, create a CodeAnywhere container that is a &quot;connection&quot; to the <code>username.github.io</code> repository: this will automatically set the value of the remote repository to GitHub's <code>username.github.io</code>.</li>
+<li>Clone the repository to your local git environment. When working in CodeAnywhere, every container by default is configured to be a git repository as well. Cloning <code>username.github.io</code> into the container's working dir would thus create a repository inside a repository. To prevent this, create a CodeAnywhere container that has a &quot;connection&quot; to the <code>username.github.io</code> repository: this will automatically set the value of the remote repository to GitHub's <code>username.github.io</code>.</li>
 <li>Create an <code>index.html</code> file in the <code>workspace</code> directory (the same directory that also contains the <code>.git</code> folder.</li>
 <li>Add the file to the staging area and commit.</li>
 <li>Push the commit to the remote repository simply by using <code>git push -u origin master</code></li>
@@ -24,7 +24,7 @@
 </ol>
 <p>Improving and customizing GitHub webpages is covered in the next main section</p>
 <h3 id="project-site">Project site</h3>
-<p>Create a GitHub site from scratch based on an existing project (repository).</p>
+<p>Create a GitHub site from scratch based on an existing project (repository). When starting from scratch, the workflow is as follows:</p>
 <ol style="list-style-type: decimal">
 <li>Create a new file and call it <code>index.html</code></li>
 <li>Add some content</li>
@@ -33,26 +33,27 @@
 <li>In the project's <code>Settings</code> tab, go to GitHub pages and select <code>master branch</code> in the <code>Source</code> field</li>
 <li>View the result on <code>https://username.github.io/projectname/</code></li>
 </ol>
+<p>When creating pages for an existing project, branch <code>gh-pages</code> is used by the automatic page generator (see &quot;GitHub Pages&quot; in the &quot;Settings&quot; menu)</p>
 <h2 id="using-jekyll-as-a-static-site-generator">Using Jekyll as a static site generator</h2>
 <p>Set up Jekyll locally to test changes to your site. Installation requires a recent version of Ruby. With Ruby available, install Jekyll as follows (tested in CodeAnywhere with Ubuntu 14.04 LTS):</p>
 <p>Install Bundler:</p>
-<pre><code>sudo gem install bundler</code></pre>
+<pre><code>gem install bundler</code></pre>
 <p>Create a Gemfile in the local git repository. Add the following code to a text file called <code>Gemfile</code>.</p>
 <pre><code>source &#39;https://rubygems.org&#39;
 gem &#39;github-pages&#39;, group: :jekyll_plugins</code></pre>
 <p>Install Jekyll and other dependencies from the GitHub Pages gem:</p>
-<pre><code>sudo bundle install</code></pre>
+<pre><code>bundle install</code></pre>
 <h3 id="generate-jekyll-site-files">Generate Jekyll site files</h3>
-<p>Create a Jackyll template site as follows:</p>
+<p>Create a Jekyll template site as follows:</p>
 <pre><code>bundle exec jekyll new . --force</code></pre>
 <p>The output should say something like: <code>New jekyll site installed in /home/cabox/workspace.</code></p>
 <p>Edit your Gemfile and remove the following line: <code>&quot;jekyll&quot;, &quot;3.2.1&quot;</code>. Uncomment the following line by removing the <code>#</code>: <code>gem &quot;github-pages&quot;, group :jekyll_plugins</code></p>
-<p>The above locks the Jekyll version to that used by GitHub pages.</p>
+<p>The above two actions locks the Jekyll version to that used by GitHub pages.</p>
 <p>Use <code>sudo bundle update github-pages</code> to update to the version run by HitHub pages.</p>
 <p>Commit and push changes to the site to GitHub using Git.</p>
 <h3 id="build-and-test-your-local-jekyll-site">Build and test your local Jekyll site</h3>
 <p>Run</p>
-<pre><code>sudo bundle exec jekyll serve</code></pre>
+<pre><code>sudo bundle exec jekyll serve --host=0.0.0.0</code></pre>
 <h3 id="intro-to-jekyll-from-the-book-creating-blogs-with-jekyll-by-vikram-dhillon">Intro to Jekyll (from the book: &quot;Creating Blogs with Jekyll&quot; by Vikram Dhillon)</h3>
 <p>The GitHub Pages Help sites do not explain in-depth how to blog with Jekyll. Therefore, a summary of abovementioned book is given here (parts II and III).</p>
 <ol style="list-style-type: decimal">
@@ -196,19 +197,18 @@ layout: default
 <p>When trying out the examples listed in the book, you may need to switch between themes. Instead of copy pasting and deleting specific files, use the help in <a href="http://stackoverflow.com/a/37186333" class="uri">http://stackoverflow.com/a/37186333</a>. In short, the process involves</p>
 <ol style="list-style-type: decimal">
 <li>creating a new branch without history (<code>git checkout --orphan newtheme</code>),</li>
-<li>switching to it (<code>git checkout newtheme</code>),</li>
-<li>cleaning it out (<code>git rm -rf .</code>, <code>git clean -dfx</code>),</li>
-<li>adding the theme repo as an &quot;upstream&quot; remote (<code>git remote add upstream &lt;url&gt;</code> i.e., unlike the &quot;origin&quot; remote, you only pull from it, never push to it)</li>
-<li><code>git fetch upstream</code>,</li>
+<li>cleaning it out (<code>git rm -rf .</code>, <code>sudo git clean -dfx</code>),</li>
+<li>after removing any existing <code>upstream</code> url, add the theme repo as an <code>upstream</code> remote (<code>git remote add upstream &lt;url&gt;</code> i.e., unlike the &quot;origin&quot; remote, you only pull from it, never push to it)</li>
+<li><code>git fetch upstream</code> (updates the remote-tracking branch),</li>
 <li><code>git pull upstream master</code></li>
-<li>Build the theme locally and test it (<code>sudo bundle exec jekyll serve</code>)</li>
-<li>Copy across blog posts from the master branch: <code>git checkout master -- _posts</code> (and perhaps <code>_drafts</code> as well). Rename or remove files leading to conflict (e.g. <code>Gemfile</code>)</li>
+<li>Check out the <code>Gem</code> files from the master branch, then build the theme locally and test it (<code>sudo bundle exec jekyll serve</code>);</li>
+<li>Copy across blog posts from the master branch: <code>git checkout master -- _posts</code> (and perhaps <code>_drafts</code> as well).</li>
 <li>stage and commit changes</li>
 <li>define the merge strategy for merging the new theme branch with the main branch (<code>git merge -s ours master</code>), favoring the new theme's code in case of conflicts</li>
 <li>switch to master branch,</li>
 <li>merge the new theme branch <code>git merge newtheme</code></li>
-<li>push the changes</li>
-<li>clean up the new theme branch</li>
+<li>add, commit, push the changes</li>
+<li>delete the new theme branch</li>
 </ol>
 <h4 id="kactus-theme-nickbalestrakactus">Kactus theme (/nickbalestra/kactus)</h4>
 <ul>
@@ -276,5 +276,352 @@ layout: default
 <li>Prototypes can be used to answer the design questions around scope and scale.</li>
 <li>Then, make a tools list and think about code snippets/include files that are needed to implement them.</li>
 </ul>
+<h5 id="adapting-the-kactus-theme-to-a-news-blog">Adapting the Kactus theme to a news blog</h5>
+<p>In the following, make sure to compile changed code to apply changes. The &quot;trick&quot; performed here is to display content on the static <code>index.html</code> page (using template <code>default.html</code> and by-passing dedicated &quot;post&quot; pages).</p>
+<ol style="list-style-type: decimal">
+<li>Enable adding icons from <a href="http://fontawesome.io/get-started/">fontawesome</a> CDN: Place the fontawesome CSS file link (or: the JS file link) into the layout's <code>head</code>. The file that defines the <code>head</code> may be in <code>_includes</code> or <code>_layouts</code>. For theme Kactus, it is in layout file <code>default.html</code> (from which all other layout files inherit).</li>
+<li>Add icons to various include files such as <code>navigation.html</code> (note however that the use of icons is not necessarily considered good user experience practice)<br />
+</li>
+<li>Make changes to the number of posts per page (1) and remove the &quot;profile&quot; page from the blog<br />
+</li>
+<li>In the <code>post-list.html</code> remove the hyperlinks, as posts should appear on the same page as the post list</li>
+<li>Also, display post content on the post list</li>
+<li>Add share buttons; the code snippet that holds the share buttons goes into the <code>pagination.html</code> code which makes for easier spacing. More efficient handling of social media can be achieved using third party service AddThis.</li>
+<li>Add an archive: add the link to the archive in the navigation section of <code>pagination.html</code>.</li>
+<li>Write the archive code: this involves looping through the list of posts and separating them according to publication year</li>
+<li>Enable commenting and add the Disqus short name to <code>_config.yml</code>. Add the commenting as a property of the &quot;post list&quot; page (as in the new theme blog post appear in &quot;post-list&quot; pages rather than &quot;post&quot; pages). The post-list calls the pagination code: add the <code>{% include disqus.html %}</code> code at the end of the navigation bar at the end of the pagination page.</li>
+<li>Setup a mailing list (using Mailchimp: &quot;Create a List&quot; menu option and then create a General signup form). The next step is adding subscribe functionality at the top of the page.</li>
+<li>Add page and post titles under the top navigation links/arrows in the <code>navigation.html</code> code.</li>
+<li>Modify the style file in <code>assets/css/style.css</code>. Because this folder is not interpreted by Jekyll (it does not start with <code>_</code>) CSS code modifications can be tested directly in the browser development tool (F12). Any changes tested should however still be applied to the CSS sheet on file!</li>
+</ol>
+<h4 id="photo-blog">Photo blog</h4>
+<p>Note that hosting pictures on GitHub is not efficient. Selling photos on the blog creates unnecessary overhead. The solution is to offload the photography on a platform that is meant to share and sell photos (e.g. &quot;500px&quot;). Jekyll blogs are useful for making a photography portfolio (although slightly more complex than Wordpress).</p>
+<p>Based on the Project Specification (containing scope, scale, To do's and tools) and a sketch/prototype, theme &quot;DopeTrope&quot; was selected for this site.</p>
+<pre><code>&quot;The the essence of the freemium model: You attract readers to your blog with free content and embed your own pictures at the end of the post. The readers are eventually converted into paid
+users of that photography.&quot;</code></pre>
+<h5 id="adapting-the-dopetrope-theme-to-a-photo-blog">Adapting the DopeTrope theme to a photo blog</h5>
+<ol style="list-style-type: decimal">
+<li>Change the main title. Start looking in <code>index.html</code>; there is an include <code>header_landing.html</code> that sets an <code>h1</code> header with the blog title: change this title.</li>
+<li><code>header_landing.html</code> further defines a navigation bar for <code>index.html</code>. Note that the <code>nav.html</code> include file also contains a navigation element intended for other page layouts (e.g. <code>left-sidebar.html</code>). Shorten the navigation bar to only include &quot;Home&quot;, &quot;Blog&quot;, &quot;Specialties&quot; and &quot;Subscribe&quot; elements.</li>
+<li>The next part of the header is the banner which gives an impression of the portfolio; change the text as appropriate</li>
+<li>The &quot;features&quot; <code>section</code> (id &quot;intro&quot;) in the next part of the header needs to be moved to a separate page where it can be shown without accompanying blog and footer; create a layout that does not include blog and footer but does include specifically the <code>header_landing</code> include file with its &quot;features&quot; section. Create a new page (&quot;Features&quot;) that uses this new layout. Remove the &quot;Features&quot; from <code>index.html</code> by creating a new version of the <code>header_landing</code> include file that excludes the &quot;Features&quot;</li>
+<li>Create a new page listing the blog posts using existing code in <code>no-sidebar.html</code></li>
+<li>Remove the blog from the <code>landing.html</code> template while adding two closing <code>div</code> tags to <code>index.html</code> (which used to be taken care of in the <code>blog.html</code> include)</li>
+<li>Modify the blog post page (<code>posts.html</code>): modify <code>nav.html</code> to make it similar to the navigation in <code>header_landing</code></li>
+<li>Modify the posts in the <code>_posts</code> folder: remove the image link in the YAML header and add category <code>pinned</code> to each of them; in the <code>footer.html</code> only show posts with category <code>pinned</code>: <code>{% for post in site.categories.pinned offset: 0 limit: 3 %}</code></li>
+<li>Embedding images from a photography site requires constraining the size of the images: use <code>http://embed.ly/code</code></li>
+<li>Add links to blog posts and features to the navigation block in the <code>header_landing_new.html</code>, <code>nav.html</code> and <code>header_landing_new.html</code> codes</li>
+<li>Add the sign-up form link (generated in MailChimp) to the subscribe button on the navigation bar.</li>
+</ol>
+<p>The modular implementation of these Jekyll blogs makes them very customizable. On the other hand, it is not directly evident how include files, layouts and top-level pages are interlinked.</p>
+<p>Professional photos hosted on a regular web site take too long to load. Instead of hosting them on dedicated sites like &quot;500px&quot; they can be served using a <strong>Content Delivery Network</strong> (CDN). A CDN serves static content to users with high performance. The content is requested at the same time as the web page is loaded. CDNs resolve to an optimized server based on location of the user and availability of the server. Most portfolios rely on some kind of CDN. CDNs also offer SSL encryption and DDOS protection.</p>
+<h4 id="debate-platform">Debate platform</h4>
+<p>Along the lines of an Oxford-style debate: * two speakers, a moderator, participants * one speaker defends a proposition, the other opposes it</p>
+<p>The inspiration comes from the &quot;Debates&quot; pages in &quot;The Economist&quot; (which is a closed platform unlike the Jekyll platform in this chapter, which is open source).</p>
+<h5 id="github-walk-through">GitHub walk-through</h5>
+<p><strong>Pull requests</strong> are the only proper way to contribute to open source projects in GitHub. Pull requests are issued after forking and adding to a repository. The commits to be submitted should be described clearly. <strong>GitHub pages</strong> is an automatic page generator that, for existing projects, uses branch <code>gh-pages</code>. This feature can be used to create a landing page for a repo. When repo <code>username.github.io</code> is selected, GitHub pages automatically converts that repository into a website and includes any Jekyll content in the compilation process.</p>
+<blockquote>
+<p>A custom domain can be supplied for a web site created with GitHub Pages. GitHub will redirect to this custom domain.</p>
+</blockquote>
+<p>Two types of redirect exist: subdomains and apex domains.</p>
+<p>Terminology:</p>
+<ol style="list-style-type: decimal">
+<li>subdomains, e.g. <code>subdomain.example.com</code></li>
+<li>primary domains (top-level domains), e.g. <code>example.com</code></li>
+<li>project directory, e.g. <code>example.com/project</code></li>
+<li>apex domains (top-level domains so called by GitHub to refer to redirects),</li>
+</ol>
+<ul>
+<li>Organization pages are redirected to apex domains: a <code>CNAME</code> file in the GitHub repo and the &quot;zone&quot; file of the custom domain are involved in making the redirect happen.
+<ul>
+<li>Create a <code>CNAME</code> file in the GitHub repository containing the top-level domain name of the domain to redirect to.</li>
+<li>Create &quot;A&quot; records in the DNS Zone file to resolve to the following IP addresses: <code>192.30.252.153</code> and <code>192.30.252.154</code> (<code>https://help.github.com/articles/setting-up-an-apex-domain/#configuring-a-records-with-your-dns-provider</code>)</li>
+</ul></li>
+<li>Project pages are redirected either to a subdomain or to an independent domain. If an organization site exists, projects default to being subdomains of the organization site</li>
+<li>To make a project redirect to an independent domain:
+<ul>
+<li>On the repository side, create a <code>CNAME</code> file with the domain name</li>
+<li>On the DNS side, create a <code>CNAME</code> record (with name, type and value: <code>blog</code>, <code>CNAME</code> and <code>username.github.io.</code>) and an <code>A</code> record ([blank], <code>A</code> and <code>192.30.252.153</code>)</li>
+</ul></li>
+<li>To make a project redirect to a subdomain:
+<ul>
+<li>On the repository side, create a <code>CNAME</code> file with the subdomain name</li>
+<li>On the DNS side, create a <code>CNAME</code> record (<code>blog</code>, <code>CNAME</code> and <code>username.github.io.</code>)</li>
+</ul></li>
+</ul>
+<p>Objectives of prototyping</p>
+<ul>
+<li>Help visualize the end product. The prototype guides the search for an editable theme (&quot;you almost never want to start from absolutely nothing&quot;).</li>
+<li>Model the site's behaviour and workflows using a storyboard: capture transitions going from one step (page) to the next.</li>
+</ul>
+<p>The purpose of <strong>Jekyll Collections</strong> is to facilitate</p>
+<ul>
+<li>organizing topics/debates/posts</li>
+<li>automatically updating/reassigning links when a new topic/debate/post is added (so called &quot;routing&quot;, which is the topic of advanced frameworks like &quot;Ember.js&quot; and &quot;Angular.js&quot;)</li>
+</ul>
+<p>Jekyll routing mechanisms involve:</p>
+<ul>
+<li>primitive-type routing preset, which creates links at compilation</li>
+<li>derived-type routing relying on YAML (permalink) and Liquid (inheritance, includes)</li>
+<li>&quot;collections&quot;: sets of interrelated documents with custom properties that behave like a post or page</li>
+</ul>
+<p>Collections are created by</p>
+<ul>
+<li>adding a new folder with the name of the collection (<code>_collection</code>)</li>
+<li>specify the folder in <code>_config.yml</code> along with optional variables. Example:</li>
+</ul>
+<pre><code>collections:
+         new_debate:
+           output: true               # every page in the collection is an html file
+           permalink: /new_debate/:path/ # routing and permalink for each page</code></pre>
+<p>In this example, every debate represents a new collection, accessible via e.g. <code>/new_debate/index.html</code>.</p>
+<h5 id="editing-the-debate-theme">Editing the Debate theme</h5>
+<ul>
+<li>Modify navigation: make two bars (one to navigate to the debates, another to navigate within each debate). To create the second bar, a global variable is required that can be set to the debate that is the &quot;current&quot; debate. It is further assumed that each debate in the collection has the same set of pages (debate phases)</li>
+<li>Show the current debate</li>
+<li>List previous debates by looping over the debates (collections) and displaying links for all of them</li>
+<li>Make the header image appear with the appropriate text</li>
+</ul>
+<p>The heavy use of third-party clienttools in Jekyll blogs is related to the fact that no server-side programming can be done as Jekyll creates static pages.</p>
+<h4 id="open-research">Open research</h4>
+<h5 id="planning">Planning</h5>
+<p>Functionality to be embedded in the theme:</p>
+<ol style="list-style-type: decimal">
+<li>KaTeX, a minimal LaTeX distribution (using source files)</li>
+<li>Plotlyjs, a graph drawing tool (using a CDN file)</li>
+<li>Bibliography (bibtex), parsed by Javascript</li>
+<li>An Ipython notebook, displayed on the blog and in <code>nbviewer</code></li>
+<li><code>Reveal.js</code>, a slide tool: download files to submodule (a Git repository inside the Jekyll blog Git repository), add settings as YAML front matter.</li>
+</ol>
+<p>Any tool that is embedded into the theme needs to be instantiated, typically using a <code>div</code> tag.</p>
+<h5 id="implementation">Implementation</h5>
+<ul>
+<li>Install the files for Jekyll theme <a href="http://jekyllthemes.org/themes/clean-blog/">&quot;clean blog&quot;</a>.</li>
+<li>Load and instantiate <code>KaTeX</code>:
+<ul>
+<li>Copy files <code>katex.min.css</code> and <code>katex.min.js</code> from https://github.com/khan/katex/releases to new Jekyll folder <code>public</code></li>
+<li>Load the files in <code>head.html</code> (in <code>_includes</code>) using <code>link</code> and <code>script</code> tags, respectively</li>
+<li>Instantiate by adding javascript code that tells all blog posts to render <code>KaTeX</code> code properly: JS code is added to a module <code>render_katex.html</code> in the <code>_includes</code> folder which is then called by the post layout file (at the start of <code>{{ content }}</code>.</li>
+</ul></li>
+<li>Test by adding an equation to one of the posts. Add Liquid escape &quot;character&quot; <code>{% raw %}</code> and <code>{% endraw %}</code> around the <code>div</code> element that includes the equation (given by attribute <code>data-expr</code>).</li>
+<li>Load and instantiate <code>Plotly.js</code>
+<ul>
+<li>Add a link to the Plotly application in <code>head.html</code></li>
+<li>In a blog post, add a canvas (a <code>div</code> block with pre-specified dimensions)</li>
+<li>Add JS code for a Plotly graph and link it to the canvas.</li>
+</ul></li>
+<li>Parse a bibliography (bibtex to HTML) and render it (styling it using CSS) on a separate blog <strong>page</strong>:
+<ul>
+<li>load <code>jquery</code>,</li>
+<li>load <code>bibtex_js.js</code></li>
+<li>load the bibtex bibliography (use a liquid <code>include</code> tag to load the file as a module),</li>
+<li>render the bibliography in a dedicated <code>div</code> box; also add a separate <code>div</code> box containing an HTML template. Note: the <code>bibtex_js.js</code> file does not render the bibliography correctly in the Chrome browser. Note: the correct JS file makes sure <code>jquery</code> is loaded on every page used by <code>bibtex_js</code>. A usable version of the JS file is added to this code documentation Git repository. Data can also be saved in YAML formatted files in the <code>_data</code> folder: entries in the YAML file can be programmatically accessed using the Liquid variable <code>site.data.projects</code>, with <code>projects</code> referring to the base name of the YAML file. For bibtex information, this is not efficient as it takes a lot of work to parse and render each bibtex entry. A plug-in (<code>jekyll-scholar</code>) designed entirely for bibliographic purposes will be the best option to display a bibliography.</li>
+</ul></li>
+<li>iPython notebooks (<code>ipynb</code> files) render directly on GitHub (they are translated to markdown): read <a href="http://blog.jupyter.org/2015/05/07/rendering-notebooks-on-github/">here</a>.. Further reading <a href="http://www.nature.com/news/interactivenotebooks-sharing-the-code-1.16261">here</a>. No code demo is presented in the book.</li>
+<li>Add <code>reveal.js</code> to the project as a Git sub-module: <code>git submodule add https://github.com/hakimel/reveal.js.git</code>, then, create a layout that achieves the following:
+<ul>
+<li>import the <code>reveal.js</code> files to the right place</li>
+<li>supply <code>reveal.js</code> with configuration details Then, create a blog post and put <code>slide</code> in the YAML layout. The output is a slide show.</li>
+</ul></li>
+</ul>
+<h4 id="open-jekyll-last-chapter">Open Jekyll (last chapter)</h4>
+<p>This chapter covers the concepts of:</p>
+<ul>
+<li>plug-ins (including Jekyll compilation to include plug-ins),</li>
+<li>Ruby,</li>
+<li>Continuous Integration,</li>
+<li>secure keys,</li>
+<li>automating the build process,</li>
+</ul>
+<p>Integration of technologies into Jekyll may occur on two levels:</p>
+<ul>
+<li>overlay assets layer (overlaid on an existing Jekyll skeleton): integrations into this layer are achieved with Liquid's <code>include</code> mechanism and are compatible with GitHub.</li>
+<li>shared features layer (core Jekyll funcitonality, not covered in previous chapters)</li>
+</ul>
+<p>GitHub will not build Jekyll blogs that use custom plug-ins: due to security concerns, GitHub uses the <code>--safe</code> Jekyll build flag. As a work-around, build the blog locally and push the static files (in the <code>_site</code> folder) to GitHub.</p>
+<h5 id="project-jekyll-design-studio">Project: &quot;Jekyll Design Studio&quot;</h5>
+<p>This chapter's project consists of a web site that is a blog design studio (it builds and sells custom Jekyll implementations). Features include:</p>
+<ol style="list-style-type: decimal">
+<li>a parallel advertising platform (Fiverr)</li>
+<li>a shopping cart (Snipcart)</li>
+<li>pre-order and subscription functionalities (Gumroad)</li>
+<li>video ads (Youtube, Wistia)</li>
+<li>donations (Youtube)</li>
+<li>mock-ups and demos (InVision)</li>
+<li>add live embeds of demos (embed.ly)</li>
+<li>live customer support (Hipchat)</li>
+<li>password-protected web products (Aerobatic)</li>
+<li>create custom Jekyll plug-ins</li>
+<li>automate compilation of custom Jekyll builds</li>
+<li>continuous integration: compile the design studio every time a change is made to ensure all plug-ins are always integrated (Codeship). Automatic rebuilds are created by &quot;build tools&quot; which use specific files supporting the build process. The resulting rebuilt site is placed back in the same location as the original.</li>
+</ol>
+<h5 id="ruby">Ruby</h5>
+<p>Ruby is dynamically typed (user does not need to specify the object's type) and object-oriented. Ruby on Rails is the backbone of GitHub. The online interpreter software used in this chapter to learn and play around with Ruby is <code>repl.it</code>. Note: Ruby and Liquid syntaxes are very different.</p>
+<p><strong>Basics</strong></p>
+<ul>
+<li>primitive data types are integer, boolean and string</li>
+<li>function <code>puts</code> works like <code>print</code> but adds a newline to the output</li>
+<li>reading in a string from standard input and assigning to variable: <code>phrase = gets.chomp</code></li>
+<li><p>string concatenation: <code>&quot;this is&quot; + my_text_var</code></p></li>
+<li>everything is an object: properties and methods of objects are accessed by adding their names after the object, separated by &quot;<code>.</code>&quot;</li>
+<li>methods operating on an object can be concatenated (&quot;chaining&quot;)</li>
+<li><p>an exclamation mark after a method indicates the method will change the object it was called on</p></li>
+<li><code>if</code> statements can be followed by <code>else if</code>, <code>else</code> and always end with <code>end</code>. Statements following the condition are indented.</li>
+<li>short-hand conditional evaluation is achieved using <code>.includes?</code> followed by (optionally <code>else</code> and) <code>end</code></li>
+<li><code>unless</code> works similarly to <code>if</code>, with opposite meaning</li>
+<li><code>until</code> loops are the opposite to <code>while</code> loops: both end with <code>end</code></li>
+<li><p>the condition in <code>for</code> loops may include <code>..</code> which includes the higher number, or <code>...</code> which excludes the higher number: e.g. <code>for i in 1...10</code> excludes 10. Break out of a loop using <code>break if</code> (which uses no separate <code>end</code>)</p></li>
+<li>arrays are lists of items (index starts with 0): <code>[12, &quot;ash&quot;, 24, 2]</code></li>
+<li>the array index often is a counter in loops</li>
+<li>a <code>do</code> loop (similar to a <code>for</code> loop) specifies a counter variable in between <code>| |</code>: <sub>~</sub> my_array.each do |item| puts item end <sub>~</sub></li>
+<li>hashes are arrays that can be indexed by any type of object (not only integers); they are lists of key-value pairs separated by <code>=&gt;</code> or <code>:</code> and surrounded by curly braces: <sub>~</sub> my_hash = { key1 =&gt; value1, key2 =&gt; value2 } <sub>~</sub> The <code>do</code> loop now functions as follows: <sub>~</sub> my_hash.each do |key, value| puts key + &quot;: &quot; + value end <sub>~</sub></li>
+<li>add a new element to a hash: <code>my_hash[key3] = value3</code></li>
+<li><p>the <code>select</code> method works on hashes as follows, e.g.: <code>.select { |name, rating| rating &gt; 2 }</code>, where <code>name</code> represents the key and <code>rating</code> the value</p></li>
+</ul>
+<p><strong>Methods and classes</strong></p>
+<ul>
+<li>a function definition consists of a header, body and ending</li>
+<li>a function can be defined with an undefined number fo arguments through the use of &quot;splat&quot; arguments: <sub>~</sub> def what_up(greeting, *bros) bros.each do |bro| puts &quot;#{greeting}, #{bro}!&quot; end end <sub>~</sub></li>
+<li>the use of <code>#{}</code> indicates a placeholder for the string argument to be passed</li>
+<li>a method can return a boolean which can then be used in further calculations, e.g.: <code>return true</code></li>
+<li>Jekyll plug-ins contain numerous methods that work together to provide functionality</li>
+<li>Creating a class using the <code>initialize</code> method (the &quot;constructor&quot;), as well as adding methods for the class: <sub>~</sub> class Person def initialize(name, age) <span class="citation">@name</span> = name <span class="citation">@age</span> = age end def about puts &quot;I'm #{<span class="citation">@name</span>} and I'm #{<span class="citation">@age</span>} years old&quot; end def account <span class="citation">@number</span> = 12345 puts &quot;My bank account number is #{<span class="citation">@number</span>}&quot; end end <sub>~</sub></li>
+<li>Constructing a new object of class <code>Person</code>: <code>Jim = Person.new(&quot;Jim&quot;, 20)</code>: <code>new</code> looks for a method <code>initialize</code> to construct an object of class <code>Person</code>. Class names by convention start with a capital letter</li>
+<li>The line of code above illustrates &quot;declaration&quot; of a new variable (<code>Jim</code>), &quot;instantiation&quot; of a new object of a certain class (<code>Person.new</code>) and &quot;initialization&quot; of properties of the object</li>
+<li><code>@variable</code> represents an instance variable, which is available everywhere in the class</li>
+</ul>
+<h5 id="ruby-gems">Ruby Gems</h5>
+<p>A gem is a library of classes that together provide a well-described piece of functionality. Jekyll is an example of a gem. Libraries are distributed using packages. Ruby's package manager is RubyGems. Command-line access to RubyGems is provided using the <code>gem</code> command. Object <code>ri</code> is the Ruby index, which is Ruby's help documentation. The library can be called from the command line, outside of <code>ruby</code>, just by calling its name.</p>
+<p>Just like a javascript file can be made a dependency for a Jekyll project, other gems can be dependencies too. A Ruby <strong>Gemfile</strong> defines the dependencies required by a project.</p>
+<p>Jekyll itself requires a number of dependencies to work. When Jekyll is installed, these are installed at the same time using information in the Gemfile. Create a Jekyll blog project from scratch in folder <code>myblog</code>:</p>
+<ul>
+<li><code>jekyll new myblog</code> where <code>myblog</code> may be the current folder.</li>
+<li>Jekyll blogs can be compiled (<code>jekyll build</code>) with the compiled blog being saved in the <code>_site</code> folder. <code>jekyll build --watch</code> (which runs in the foreground) auto-rebuilds if changes are made to the blog.</li>
+<li>The blog can be <strong>compiled and served</strong> locally on port <code>4000</code> using <code>jekyll serve</code>: this process also runs in the foreground and auto-rebuilds the site if changes are made.</li>
+<li>The contents of <code>_site</code> can be removed using <code>jekyll clean</code>.</li>
+</ul>
+<p>Jekyll version control is demonstrated on another platform than GitHub (BitBucket in the book). In addition, the site is compiled using Codeship (implementing continuous integration) and OAuth authenticates communications. OAuth uses principles similar to SSH authentication: the public key of a publicate-private key pair is distributed to services the user wants access to. Access is given provided the private key matches the public key.</p>
+<p>Push the site created using the <code>jekyll new</code> command to a repository on Gitlab.</p>
+<p>Codeship, or any other build tool, requires</p>
+<ul>
+<li>dependencies or gems to be downloaded</li>
+<li>access to the repository containing the Jekyll sources</li>
+</ul>
+<p><strong>Bundler</strong> is a dependency management program for Ruby projects that is available in Codeship. It facilitates plug-in management, saving the user the effort of having to download and update plug-ins manually. It requires:</p>
+<ul>
+<li>the <code>_config.yml</code> file (specifically the line starting with <code>gems:</code> containing an array of gems) and</li>
+<li>the <code>Gemfile</code>, specifiying which gems (including Jekyll itself) are required and which versions</li>
+</ul>
+<blockquote>
+<p>The <code>Gemfile</code> instructs <code>bundler</code> which gems to download; <code>_config.yml</code> instructs Jekyll to use those plug-ins.</p>
+</blockquote>
+<p>From the user site, there is minimal interaction with the plug-ins. Plug-ins function similar to e.g. javascript imports in that the user can expect a plug-in-specific syntax to function out of the box.</p>
+<p><strong>Rake</strong> is Ruby's &quot;make&quot; (also available in Codeship), a batch tool that takes a makefile to compile an application. In this project, Rake is used to:</p>
+<ul>
+<li>access Gitlab repository,</li>
+<li>download the remote repo code to a temporary location</li>
+<li>compile and store in the <code>_site</code> folder</li>
+<li>pushing the code from <code>_site</code> back to the remote location, keeping Git tags in sync (the version on the remote repo is always the latest) Note that the build tool works on the remote repo, not on a local one: this is a must if Jekyll is to be built in different customizations for a host of customers.</li>
+</ul>
+<p>The Codeship compiler uses Rake to automate the compilation process.</p>
+<h5 id="continuous-integration">Continuous Integration</h5>
+<p>Deployment pipeline:</p>
+<ol style="list-style-type: decimal">
+<li>New features/commits are checked in to a remote repository (as pushed commits)</li>
+<li>Automated build tools verify the checked-in feature/commit and recompile the project (e.g. Jekyll site); this is done with the help of &quot;commit hooks&quot; that Codeship has set up. The hooks listen for &quot;commit&quot; events and trigger a rebuild by bundler and rake</li>
+<li>The compiled project is pushed back to the remote repository as a new commit</li>
+</ol>
+<p>Set up the pipeline:</p>
+<ol style="list-style-type: decimal">
+<li>Couple Codeship to the Gitlab account (powered by OAuth)</li>
+<li>Select the repository</li>
+<li>Select the build environment (Ruby)
+<ul>
+<li><code>bundle install</code> will download the gems listed in the Gemfile</li>
+<li>Configure <code>Rake</code>: set up a hook for the master branch and select <code>Rake</code> (i.e. &quot;custom script&quot;) as the process carrying out deployment.</li>
+<li>Run the following two <code>rake</code> commands that will execute the tasks defined in the Rake file rake generate rake publish The script is then run on the next push to the master branch</li>
+</ul></li>
+<li>Obtain the public SSH key from Codeship and add it to GitLab. Note: &gt; &quot;When you register with Codeship and configure your repository to be used in the deployment pipeline, &gt; Codeship automatically adds the SSH key corresponding to your account. The problem is that &gt; this key is added as a <strong>deployment key</strong>, meaning that it has read-only access to your account. We need write &gt; access as well, and to do that, we must first remove the deployment key. [...] then add the public SSH key to &gt; the Bitbucket account so that the key shows up under SSH keys&quot;</li>
+</ol>
+<p>The Jekyll site is served to the user with Aerobatic (when using Bitbucket as repo) or Gitlab Pages (if Gitlab is your repo). <em>Codeship pushes the compiled site back to a new branch where it will be served</em>: This will keep the source code free from the hosting production code.</p>
+<h5 id="gitlab-pages">Gitlab pages</h5>
+<p>In contrast to hosting on GitHub, serving pages on Gitlab requires that a daemon in installed on a dedicated domain. As Continuous Integration is also available from Gitlab, it makes sense to have sites hosted with CI from Gitlab. CI requires that a <code>.gitlab-ci.yml</code> file is created in the repo root. This YAML file will contain</p>
+<p>Switch to Gitlab</p>
+<ul>
+<li>Create two containers in one box: <code>h-ms.gitlab.io</code> and gitlabserve, with <code>h-ms.gitlab.io</code> pointing to the Gitlab repo and gitlabserve a ruby box with &quot;always on&quot; enabled</li>
+</ul>
+<p>On the <code>h-ms.gitlab.io</code> container:</p>
+<ol style="list-style-type: decimal">
+<li>Update and upgrade <code>apt-get</code></li>
+<li>Update ruby using <code>rvm install 2.3.2</code></li>
+<li><code>gem install bundler</code> to install bundler (1.13)</li>
+<li>Install gems required for Jekyll setup with <code>bundle install</code> using a simple Gemfile containing <code>gem &quot;jekyll&quot;, &quot;3.3.1&quot;</code> and <code>gem &quot;minima&quot;</code></li>
+</ol>
+<p>SSH key does not require renewal as the key used is the default SSH key for all Codeanywhere boxes. The URL for the Jekyll site is still <code>url: &quot;http://h-ms.github.io&quot;</code>. Modify this to serve using Gitlab Pages.</p>
+<p>On the gitlabserve box, run steps 1-2 only.</p>
+<h5 id="implementing-the-design-studio">Implementing the design studio</h5>
+<ul>
+<li>Install the &quot;solid&quot; theme; clean the <code>_site</code> folder after testing (the <code>master</code> branch should be free of hosting code)</li>
+<li>Advertisement (Fiverr, Gumroad, Youtube, Wistia)</li>
+<li>Deployment (Bitbucket/Gitlab, Codeship)</li>
+<li>Plug-ins</li>
+<li>Shopping cart (Snipcart, Stripe, Helium)</li>
+<li>Prototyping (InVision)</li>
+<li>Cards (Youtube, Wistia)</li>
+<li>Customer support (Hipchat)</li>
+</ul>
+<p>Test that plug-ins can be added to the blog:</p>
+<p>Gemfile (installs Jekyll and other Ruby gems in the build box):</p>
+<pre><code>source &#39;https://rubygems.org&#39;          # Source of gems
+gem &#39;jekyll&#39;, &#39;~&gt; 3.2&#39;                 # First gem to install is Jekyll
+group :jekyll_plugins do               # Next is a group of jekyll plug-ins
+       gem &quot;jekyll-less&quot;               # Jekyll-less plug-ins: converts LESS syntax to CSS
+       gem &#39;therubyracer&#39;, &#39;~&gt; 0.12.2&#39; # A dependency for jekyll-less plug-in
+end
+</code></pre>
+<p>Rakefile</p>
+<pre><code>require &#39;tmpdir&#39;                               # Create a temporary directory
+desc &quot;Generate jekyll site&quot;                    # First task, generate the Jekyll site
+task :generate do
+  puts &quot;## Generating Site with Jekyll&quot;
+  system &quot;jekyll build&quot;                        # System command to build Jekyll
+end
+desc &quot;Generate and publish blog to Bitbucket&quot;
+task :publish do                               # Publish Jekyll site to Bitbucket
+  Dir.mktmpdir do |tmp|                        # Creating a temporary dir to move contents of _site
+    system &quot;mv _site/* #{tmp}&quot;                 # Moving contents of _site
+    system &quot;git checkout -b publish&quot;           # A new branch to push result back to
+    system &quot;rm -rf *&quot;                          # Cleaning up
+    system &quot;mv #{tmp}/* .&quot;
+    system &#39;git config --global user.email &quot;user@email&quot;&#39;
+    system &#39;git config --global user.name &quot;username&quot;&#39;
+    system &quot;git add .&quot; # Authenticating and pushing the code back
+    system &quot;git commit -am &#39;Codeship Update&#39;&quot;
+    system &quot;git remote add glab git@gitlab.com:h-ms/blog.git&quot;
+    system &quot;git push -f glab publish&quot;
+  end
+end
+</code></pre>
+<p>Add the following plug-ins to <code>_config.yml</code></p>
+<pre><code>gems: [&#39;jekyll-less&#39;, &#39;therubyracer&#39;]</code></pre>
+<p>And add a test file (<code>test.less</code>) written in LESS that the plug-in should help compile to a CSS file.</p>
+<pre><code>@base: #f938ab;
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  -webkit-box-shadow: @style @c;
+  box-shadow: @style @c;
+}
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+.box {
+  color: saturate(@base, 5%);
+  border-color: lighten(@base, 30%);
+  div { .box-shadow(0 0 5px, 30%) }
+}
+</code></pre>
+<h4 id="git-command-line">Git command line</h4>
+<p>A review of Git command line functions is given.</p>
+<h3 id="jekyll-and-r-code">Jekyll and R code</h3>
+<p>Section 13.4 (p165) in the book &quot;Dynamic documents with R and knitr, Second Edition&quot; by Yihui Xie explains how to render R input and output for use in Jekyll.</p>
 </body>
 </html>

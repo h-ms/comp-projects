@@ -235,10 +235,60 @@ The pagination is implemented as follows:
     
 #### Sidebar include
 
+The sidebar is a `<div class="sidebar">` element containing an arbitrary number of sections (2 in the template).
+An image in a hyperlink is included; note the class and image URL:
+`<a href="#" class="image fit"><img src="{{ site.baseurl }}/images/pic01.jpg" alt="" /></a>`
 
 
 
-#### Main page
+### Individual posts
+
+Individual posts are in folder `_posts`.
+Posts have in their YAML:
+
++   layout: `layout: post`. The `post` layout loads layout `no-sidebar`, which in turn loads `default`
++   title
++   date
++   image
+
+
+#### Post layout
+
+The YAML in `post.html` defines layout as follows:`layout: no-sidebar`.
+
+The post layout contains:
+
++   a header containing page title and date
++   a post image (taken from the post's YAML) wrapped in a `span` of class `image fit`
++   the content of the post, loaded using `{{ content }}`
+
+
+#### No sidebar layout
+
+Loads layout `default`.
+
+Contains `{{ content }}` wrapped in a `div` (`class="inner"`) and a `section` (`class="wrapper"`) element.
+
+
+### Elements page
+
+Uses layout: 
+A single page that illustrates the different styles available to the Slate theme.
+
+
+
+### RSS feed
+
+Generated from available Liquid variables.
+
+
+### Assets
+
+#### Sass files
+
+
+#### Javascript files
+
 
 
 ## Creating a prototype for the website (read section in "Creating blogs with Jekyll" on prototyping again)
@@ -246,6 +296,10 @@ The pagination is implemented as follows:
 
 
 ### Code highlighting
+
+
+
+### Tags and categories
 
 
 

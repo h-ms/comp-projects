@@ -270,10 +270,28 @@ Loads layout `default`.
 Contains `{{ content }}` wrapped in a `div` (`class="inner"`) and a `section` (`class="wrapper"`) element.
 
 
+
 ### Elements page
 
-Uses layout: 
-A single page that illustrates the different styles available to the Slate theme.
+Uses layout: `layout: no-sidebar`
+
+A single page that illustrates the different styles (CSS classes) available with the Slate theme.
+
+
+#### Sass files
+
+Sass files (starting with `_` and with extension `scss`) are located in `assets/sass/` and are grouped in folders: 
+
+*   `base`
+*   `components`
+*   `layout`
+*   `libs`
+
+
+
+#### Javascript files
+
+Discussed here are `main.js`and `util.js`.
 
 
 
@@ -281,13 +299,6 @@ A single page that illustrates the different styles available to the Slate theme
 
 Generated from available Liquid variables.
 
-
-### Assets
-
-#### Sass files
-
-
-#### Javascript files
 
 
 

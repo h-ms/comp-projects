@@ -10,7 +10,7 @@ Study the `servr` and [`knitr-jekyll`](https://github.com/yihui/knitr-jekyll) do
 
 Optimal reproducibility is achieved when the results presented on the webpage are 
 not obtained on your local workstation but on the continuous integration server.
-
+See section "Continuous integration". This is however currently out of scope.
 
 
 ### R development environment setup
@@ -42,7 +42,7 @@ Set password for user `cabox` using `sudo passwd cabox`.
 1.  Upload an example Rmarkdown post from <https://github.com/yihui/knitr-jekyll> and upload it to new Jekyll folder `_source`
 2.  From an R session in the blog root folder, enter command `servr::jekyll(command='bundle exec jekyll serve --host=0.0.0.0')`.
     From now on, whenever the `.Rmd` files are edited and saved, `servr` automatically recompiles them and refreshes the HTML output.
-3.  Clean the jekyll buidl directories (`jekyll clean`)
+3.  Clean the jekyll build directories (`jekyll clean`)
 
 
 ### Continuous integration
@@ -123,7 +123,7 @@ File `footer.html` in `_includes/layout/`:
 *   This file defines a `contact` section with `class="wrapper split"`, wrapped around a `<div class="inner">` element,
     consisting of subsections:
     *   "Send us a message" which is a `<form method="post">` element containing 4 `<div>` elements wrapped in a
-        `<div class="row uniform">` element
+        `<div class="row uniform">` element. These 4 `div` elements are layed out in CSS grid format with class names `6u` and `12u`:
         *   a name field in an `<input type="text">` tag 
         *   an email field in an `<input type="email">` tag
         *   a message field in an `<textarea name="message">` tag 
@@ -270,6 +270,31 @@ Loads layout `default`.
 Contains `{{ content }}` wrapped in a `div` (`class="inner"`) and a `section` (`class="wrapper"`) element.
 
 
+### Configuration file
+
+`_config.yml` defines:
+
+*   the location of `.scss` Sass files to be:
+
+```
+sass:
+  sass_dir: assets/sass
+```
+
+*   title, tagline and description for the site. Do not forget to adapt these when adding content to the template
+*   the number of blog posts per page and the blog pagination path:
+
+```
+paginate: 4
+paginate_path: "/blog/page:num/"
+```
+    This will read in `blog/index.html`, send it each pagination page in Liquid as `paginator` variable and write the output
+    to `blog/page:num/`, where `:num` is the pagination page number, starting with 2. If a site has 12 posts and
+    specifies `paginate: 5`, Jekyll will write `blog/index.html` with the first 5 posts, `blog/page2/index.html`
+    with the next 5 posts and `blog/page3/index.html` with the last 2 posts into the destination directory.
+    Setting a permalink in the front matter of your blog page will cause pagination to break. Just omit the permalink!
+
+
 
 ### Elements page
 
@@ -280,30 +305,219 @@ A single page that illustrates the different styles (CSS classes) available with
 
 #### Sass files
 
-Sass files (starting with `_` and with extension `scss`) are located in `assets/sass/` and are grouped in folders: 
+Sass partials (starting with `_` and with extension `scss`) are located in `assets/sass/` and are grouped in folders: 
 
 *   `base`
 *   `components`
 *   `layout`
 *   `libs`
 
+The remaining `.scss` files are in folder `assets/css/`.
+
+##### `main.scss`
+
+*   `main.scss` starts by importing all `.scss` partials in the `assets/sass/libs/` folder:
+    +   `_vars.scss`: contains colors, fonts and other variables
+    +   `_functions.scss`: concerned with extracting values of variables
+    +   `_mixins.scss`: less relevant mixins for inserting fontawesome elements, padding and dealing with SVG images in IE
+    +   `_skel.scss`: A Sass-based implementation of [Skel](http://skel.io), v3.0.1.
+        `Skel` is described as "a lightweight framework for building responsive sites".
+        It includes:
+        1.  Simplified management of breakpoint media queries
+        2.  A layout module including a fully responsive CSS grid system, built-in browser resets, utility classes (like container)
+        3.  Useful mixins (like vendor)
+*   All of the files in `assets/sass/libs/` contain variables, functions and mixins only, i.e. they generate no CSS output.
+*   `main.scss` also imports (at the top) a minified fontawesome stylesheet (version 4.6.3) and googlefonts (direct from a URL)
+*   `main.scss` then includes the `skel-layout` mixin which initializes the layout module
+*   `main.scss` then creates a mixin `color` by including `color-` mixins from 10 partials in `assets/sass/base/` and `assets/sass/components/`
+*   Note that these (and other) partials are imported in the final lines of `main.scss` because they output CSS (in contrast to the partials in `assets/sass/libs/`)
+
+
+
+
+
+
+##### Essentials of Sass syntax (from the book "Jump start Sass")
+
+This section is provided as background to help understand the `scss` architecture.
+
+**Chapter 2: Sass**
+
+*   Sass is a pre-processor that compiles `.scss` (or`.sass`) files to `.css`
+*   Rule of thumb: "If it is valid CSS, it is valid SCSS"
+*   Sass implementations are available as a rubygem (Ruby Sass) and C++ library (LibSass)
+
+
+**Chapter 3: variables**
+
+*   A variable in Sass always starts with a `$`
+*   Data types include
+    1.  string
+    2.  number (optionally with unit: `42px`)
+    3.  color (`hotpink`, `rgb(1, 33, 7)`, `#BADA55`)
+    4.  list (`a, b, c`). The parentheses are optional: Any two or more values separated by a space or a comma form a list. A list may have a trailing comma.
+    5.  map (`a: 1, b: 2`). Note that in Sass the **keys** of the key-value pairs can be of any data type. A map may have a trailing comma.
+    6.  bool (`true`, `false`, optionally in combination with `not`)
+    7.  null (which, just like `false`, is a falsy value)
+    Determine type using function `type-of()`
+*   Assign variables as follows: `$font-type: sans-serif;`
+*   Strings can be concatenated with a `+` sign
+*   `/` is interpreted as divisor if the calculation is in parentheses, is part of another calculation or involves a variable
+*   Make a number unitless by dividing through 1 unit, e.g. `/ 1px`
+*   A variable declaration will be omitted if its value is `null`
+*   A variable can be defined locally or globally
+*   `!default` in a variable declaration means the value will be used if the variable was not declared elsewhere
+*   `!global` in a declaration means this declaration replaces the global variable
+*   Variable substitution within strings, selectors, calculations and media queries is achieved by placing the variable in between `#{}` (similar to how this is done in Ruby)
+*   Variables in media queries are substituted if placed in parentheses; however, the parentheses remain after substitition and therefore use of `#{}` may be required
+*   CSS custom properties start with double hyphen and are called with `var()`
+*   CSS custom properties do not use the scoping rules of Sass variables, but use cascading principles (from parent to children)
+*   CSS custom properties exist in the browser and are accessible to e.g. Javascript
+
+
+**Chapter 4: functions and mixins**
+
+*   A function definition has the following structure: `@function function-name($a, $b: 2) { }`. Results are returned through a `@return` directive in the function block
+*   Like variables, functions can have scope global or local
+*   Required parameters (without default value) come before optional parameters (with default value)
+*   Functions can be called anywhere variables can be called (with appropriate substitution): within selectors, media queries, properties, values, variables, functions, mixins
+*   Arg-lists are parameters to which an ellipsis is added, meaning it takes as many arguments as needed
+*   A mixin is a function that can output CSS code rather than return a result
+*   Structure: `@mixin mixin-name() { }`. Parentheses omitted if there are no parameters
+*   Call a mixin: `@include mixin-name;`
+*   The default value of a parameter can be the value of another parameter defined before it
+*   A mixin definition containing a `@content` directive allows passing dynamic blocks of style to the mixin (at call time)
+*   Variables/parameters local to a mixin cannot be passed to a `@content` style block  
+
+
+**Chapter 5: loops and conditions**
+
+*   Conditions: 
+```
+@if () {
+  } @else if () {
+    } @else { }
+```
+*   Conditional operators: `and` and `or`
+*   `if()` is a ternary function with parameters "condition", "return value for true", "return value for false"
+*   `for` loops:
+```
+@for $i from 1 through 10 {
+  // execution code
+}
+```
+*   `each` loops iterate over collections (lists, nested lists, maps), optionally using multi-assignment (with nested list or list of maps)
+```
+@each $author, $filename in $authors {
+  .section-#{$author} {
+    background-image: url('/images/authors/#{$filename}');
+  }
+}
+```
+*   When using an each-loop to iterate over a map, the first variable in the loop definition contains the current key, and the second one contains the current value
+*   `while` loop:
+```
+@while ($i > 0) {
+  // do something with $i
+}
+```
+
+**Chapter 6: nesting**
+
+*   "Selector nesting" or "nested rules": the ability to write rule sets within other rule sets that result in composed selectors
+*   When defining variables inside a rule set, all the nested rule sets will have access to them
+*   "Parent selector reference" or "Ampersand selector": provides dynamical access the parent selector from an inner rule
+    *   `&:hover`
+    *   `  container &`
+*   Also in deeply nested rules, the parent will be fully resolved when using `&`
+*   A suffix added to the ampersand selector will result in a new selector (e.g. when using `&-hidden`)
+*   "Context nesting": the ability to nest a scoping directive (e.g. `@media`, `@supports`) inside a rule set or scoping directive
+```
+.navigation li {
+  display: block;
+  
+  @media screen and (min-width: 42em) {
+      display: inline-block;
+  }
+}
+```
+*   `@at-root` directive: the ability to emit a style block at the root of the document, rather than nest it beneath its parent selectors
+```
+.button {
+  color: red;
+  
+  @at-root a#{&} {  // results in a "a.button" rule
+    color: blue;
+  }
+}
+```
+*   "Property nesting":
+```
+font: {
+  family: 'Jump Start', sans-serif;
+  size: 42px;
+  weight: bold;
+  style: normal;
+};
+```
+
+**Chapter 7: the `@extend` directive**
+
+*   the `@extend` directive is one way to handle inheritance in Sass. The goal is to represent a relationship between two items, where one is a category and the other is an object within that category
+```
+.message {
+  background-color: gray;
+  border: 1px solid black;
+  margin: 1em;
+}
+
+.info {
+  @extend .message;
+  background-color: blue;
+}
+```
+*   "Placeholder" or "Extend-only" selector: start with `%` and they disappear completely in the output (unlike the extended class in the example above)
+*   Advanced extending: Mixins have to be defined before they’re used, but extends do not
+*   "Nesting extends": when one nested selector extends another
+*   As a rule of thumb, only extend placeholder selectors and only define placeholders in one location.
+*   `@extend` fails to work at all across media queries
+*   mixins are often easier to understand than `@extend`, with little or no downside in most cases
+
+
+**Chapter 8: warnings and errors**
+
+*   `@warn` and `@error` directives can be used in combination with a string or other data types: `@error` stops compilation.
+
+
+**Chapter 9: architecture**
+
+*   "Partial imports": files starting with underscore and with extension `scss` are imported (copy-pasted) by the `@import` directive without being individually compiled
+*   it’s recommended to use as many partials as necessary, compiling them into a single stylesheet for production. Break out partials liberally, sorting them into folders, 
+    and importing them all back into one single master file for compilation
+*   Code that we want applied generally across the site should come first: global defaults first, followed by site-wide patterns and broad layouts, 
+    and finally, more specific modules, themes, and overrides
+*   Create a separate set of partials that produce no output; e.g. variables, functions, and mixin definitions, to be imported anywhere it might be useful    
 
 
 #### Javascript files
 
-Discussed here are `main.js`and `util.js`.
-
-
-
-### RSS feed
-
-Generated from available Liquid variables.
+Important ones are `skel.js` (which is provided as minified file) and `main.js`and `util.js`.
 
 
 
 
 ## Creating a prototype for the website (read section in "Creating blogs with Jekyll" on prototyping again)
 
+Use a new branch to implement the modified site. Test locally and when satisfied, merge with master branch.
+A similar strategy has been defined in [this](https://www.ahrenstein.com/blog/how-i-host-ahrenstein-com/) post: 
+"You work on your Jekyll site via a development branch in GitHub. When you are ready to publish changes, merge it into the master branch."
+
+
+
+### RSS feed
+
+`feed.xml` is generated from available Liquid variables.
+The [jekyll.tips](http://jekyll.tips/jekyll-casts/rss-feed/) site explains that the RSS feed should be added as a `<link>` tag in the `<head>` element (which is in `_layouts/default.html`).
 
 
 ### Code highlighting
@@ -330,6 +544,7 @@ Generated from available Liquid variables.
 
 
 
+### Add `_site/` to `.gitignore`
 
 
 

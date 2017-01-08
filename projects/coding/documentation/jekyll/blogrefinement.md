@@ -288,11 +288,11 @@ sass:
 paginate: 4
 paginate_path: "/blog/page:num/"
 ```
-    This will read in `blog/index.html`, send it each pagination page in Liquid as `paginator` variable and write the output
-    to `blog/page:num/`, where `:num` is the pagination page number, starting with 2. If a site has 12 posts and
-    specifies `paginate: 5`, Jekyll will write `blog/index.html` with the first 5 posts, `blog/page2/index.html`
-    with the next 5 posts and `blog/page3/index.html` with the last 2 posts into the destination directory.
-    Setting a permalink in the front matter of your blog page will cause pagination to break. Just omit the permalink!
+This will read in `blog/index.html`, send it each pagination page in Liquid as `paginator` variable and write the output
+to `blog/page:num/`, where `:num` is the pagination page number, starting with 2. If a site has 12 posts and
+specifies `paginate: 5`, Jekyll will write `blog/index.html` with the first 5 posts, `blog/page2/index.html`
+with the next 5 posts and `blog/page3/index.html` with the last 2 posts into the destination directory.
+Setting a permalink in the front matter of your blog page will cause pagination to break. Just omit the permalink!
 
 
 
@@ -511,6 +511,77 @@ Important ones are `skel.js` (which is provided as minified file) and `main.js`a
 Use a new branch to implement the modified site. Test locally and when satisfied, merge with master branch.
 A similar strategy has been defined in [this](https://www.ahrenstein.com/blog/how-i-host-ahrenstein-com/) post: 
 "You work on your Jekyll site via a development branch in GitHub. When you are ready to publish changes, merge it into the master branch."
+
+### Purpose
+
+1.  Purpose of the blog: "Monthly posts where I test my understanding of science & tech topics by turning them into code and visualizing them"
+2.  Intended audience: "Tech enthusiasts"
+3.  User interaction: "RSS reader; comments and discussions using Disqus and Twitter; downloading code"
+4.  Maintenance vs blogging time: "Minimal maintenance time"
+
+### Scale
+
+Resources required to scale up the site to serve a larger audience:
+
++   CDN
++   more professional dev area (Amazon S3??)
+
+### Inspiration
+
+*   Mike Bostock: <https://bost.ocks.org/mike/>
+*   Raanan Weber: <https://blog.raananweber.com/>
+*   Vesna Memisevic: <http://www.vesnam.com/Rblog/>
+*   Jeremy Kun: <https://jeremykun.com/>
+*   Quanta magazine: <https://www.quantamagazine.org/>
+
+### Featuresgit agit 
+
+The actual prototype: pages and page components
+
+1.  Main page
+    *   Banner showcasing selection of graphical work/photographs with link to the respective post
+    *   List or grid of posts: background image, title and date
+    
+2.  Blog overview page
+    *   Reverse chronological list of posts (5 per page)
+    *   For each post: title, date, excerpt, "More" button
+    *   Sidebar: [search function](http://jekyll.tips/jekyll-casts/jekyll-search-using-lunr-js/), list of categories
+    
+3.  Individual blog post page
+    *   title
+    *   date
+    *   content
+    *   syntax highlighting ([Rouge](https://jekyllrb.com/docs/templates/#code-snippet-highlighting))
+    *   (literature) references
+    *   tags, categories
+    *   Disqus
+    *   Share buttons (Twitter, email)
+    
+4.  Config file; add
+    *   title
+    *   description
+
+5.  On every page, a navigation bar with links to
+    1.  Home page
+    2.  Blog overview page
+    3.  About page / Impressum
+
+6.  On every page 
+    *   footer with social buttons, copyright statement
+
+
+### Tools list
+
+Plugins, third party tools to add.
+
++   Disqus
++   Fontawesome
++   Social buttons
++   RSS
++   Syntax highlighting
++   Code repository containing scripts available for downloading
+
+
 
 
 

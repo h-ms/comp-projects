@@ -41,6 +41,25 @@ Set password for user `cabox` using `sudo passwd cabox`.
 
 1.  Upload an example Rmarkdown post from <https://github.com/yihui/knitr-jekyll> and upload it to new Jekyll folder `_source`
 2.  From an R session in the blog root folder, enter command `servr::jekyll(command='bundle exec jekyll serve --host=0.0.0.0')`.
+    Make sure this command is run from a graphical browser such as Chrome. If run from the [command line](https://cran.r-project.org/web/packages/servr/README.html):
+```    
+# default: port 4321, do not launch browser
+Rscript -e 'servr::httd()'
+
+# open a web browser
+Rscript -e 'servr::httd()' -b
+
+# listen on port 4000
+Rscript -e 'servr::httd()' -p4000
+
+# pass arguments to the httd() function
+Rscript -e 'servr::httd(,4000,TRUE)'
+There is also a shell script under system.file('bin', package = 'servr'); if it is added to PATH, you can simply run
+
+servr  # serve the current directory
+servr -b  # launch the browser
+servr -b -p4000  # change port to 4000
+```
     From now on, whenever the `.Rmd` files are edited and saved, `servr` automatically recompiles them and refreshes the HTML output.
 3.  Clean the jekyll build directories (`jekyll clean`)
 
@@ -512,6 +531,20 @@ Use a new branch to implement the modified site. Test locally and when satisfied
 A similar strategy has been defined in [this](https://www.ahrenstein.com/blog/how-i-host-ahrenstein-com/) post: 
 "You work on your Jekyll site via a development branch in GitHub. When you are ready to publish changes, merge it into the master branch."
 
+```
+git checkout -b devtheme
+
+```
+When pushing commits on this branch to the remote repository, use
+
+```
+git push -u origin devtheme
+
+```
+After doing so once, push subsequent updates using `git push`.
+
+
+
 ### Purpose
 
 1.  Purpose of the blog: "Monthly posts where I test my understanding of science & tech topics by turning them into code and visualizing them"
@@ -533,8 +566,11 @@ Resources required to scale up the site to serve a larger audience:
 *   Vesna Memisevic: <http://www.vesnam.com/Rblog/>
 *   Jeremy Kun: <https://jeremykun.com/>
 *   Quanta magazine: <https://www.quantamagazine.org/>
+*   Boris Belousov: <http://www.boris-belousov.net/>
+*   Adam Laycock: <https://arcath.net/>
 
-### Featuresgit agit 
+
+### Features 
 
 The actual prototype: pages and page components
 
@@ -545,29 +581,34 @@ The actual prototype: pages and page components
 2.  Blog overview page
     *   Reverse chronological list of posts (5 per page)
     *   For each post: title, date, excerpt, "More" button
-    *   Sidebar: [search function](http://jekyll.tips/jekyll-casts/jekyll-search-using-lunr-js/), list of categories
+    *   Sidebar: [search function](http://jekyll.tips/jekyll-casts/jekyll-search-using-lunr-js/) and Previous/Next post buttons
     
 3.  Individual blog post page
     *   title
     *   date
     *   content
     *   syntax highlighting ([Rouge](https://jekyllrb.com/docs/templates/#code-snippet-highlighting))
+    *   mathematical notation support (MathJax CDN, and place all math notation inside `$$ ... $$`)
     *   (literature) references
-    *   tags, categories
+    *   list tags, categories
     *   Disqus
     *   Share buttons (Twitter, email)
-    
-4.  Config file; add
+
+4.  About page
+
+5.  Config file; add
     *   title
     *   description
+    *   `highlighter: rouge`
 
-5.  On every page, a navigation bar with links to
+6.  On every page, a navigation bar with links to
     1.  Home page
-    2.  Blog overview page
-    3.  About page / Impressum
+    2.  Drop-down list with post categories
+    3.  Blog overview page
+    4.  About page / Impressum
 
-6.  On every page 
-    *   footer with social buttons, copyright statement
+7.  On every page 
+    *   reduced footer with social buttons and RSS feed, copyright statement
 
 
 ### Tools list
@@ -579,8 +620,9 @@ Plugins, third party tools to add.
 +   Social buttons
 +   RSS
 +   Syntax highlighting
++   MathJax
++   Goodreads book list
 +   Code repository containing scripts available for downloading
-
 
 
 
@@ -593,6 +635,15 @@ The [jekyll.tips](http://jekyll.tips/jekyll-casts/rss-feed/) site explains that 
 
 ### Code highlighting
 
+1.  Add highlighting by "Rouge". Set the following in the `_config.yml` file:
+```
+kramdown:
+  syntax_highlighter: rouge
+```
+2.  Add a CSS stylesheet that associates colors to the highlighting classes added by Rouge: 
+    In this case, a "Pygments" [stylesheet](https://raw.githubusercontent.com/richleland/pygments-css/master/default.css) was used.
+3.  Pygment stylesheets are supported by Rouge provided that the `.codehilite` class is replaced by `highlight`.
+4.  Import the stylesheet in the `main.scss` file
 
 
 ### Tags and categories
@@ -601,6 +652,10 @@ The [jekyll.tips](http://jekyll.tips/jekyll-casts/rss-feed/) site explains that 
 
 ### Blog search function
 
+*   Topic discussed [here](http://jekyll.tips/jekyll-casts/jekyll-search-using-lunr-js/)
+*   Related blog development topics for background reading:
+    1.  data handling with JSON (see book: "Javascript and JSON essentials")
+    2.  HTML form input, "GET" method and Javascript methods
 
 
 ### Blog archive page or sidebar

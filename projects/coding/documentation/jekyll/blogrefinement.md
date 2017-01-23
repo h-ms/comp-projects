@@ -22,15 +22,15 @@ sudo sh -c "echo 'deb http://cran.cnr.Berkeley.edu/bin/linux/ubuntu trusty/' >> 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 sudo apt-get update
 sudo apt-get install -y --force-yes r-base r-base-dev
-sudo Rscript -e 'install.packages(c("knitr", "servr"), repos  = "https://cran.rstudio.com")'
+sudo Rscript -e 'install.packages(c("knitr", "rmarkdown", "servr", "formatR"), repos  = "https://cran.rstudio.com")'
 ~~~
 
 Set up R studio
 
 ~~~
 sudo apt-get install gdebi-core
-sudo wget https://download2.rstudio.org/rstudio-server-0.99.893-amd64.deb
-sudo gdebi -n rstudio-server-0.99.893-amd64.deb
+sudo wget https://download2.rstudio.org/rstudio-server-1.0.136-amd64.deb
+sudo gdebi rstudio-server-1.0.136-amd64.deb
 ~~~
 
 RStudio server is installed and can be accessed on port 8787. `rstudio-server stop` kills the RStudio server process.
@@ -181,6 +181,10 @@ The `banner.html` code consists of a single `<section>` tag.
 Inside the section, a loop (`{% for slide in include.slides %}`) iterates over the banner images,
 putting each of them inside an `<article>` environment, together with a hyperlink (inside a `<div class="inner">`
 tag) pointing to `{{ slide.url }}` with anchor text `{{ slide.title }}`.
+
+Update: if the banner pages point to blog posts, including the banner slide details in the YAML of `index.html` is
+redundant. Instead, they can be added to the YAML of the respective posts. This also makes it easier to include the post url into the slide.
+If the banner slides point to pages that are not posts, go back to the original design.
 
 
 ##### Components: features
@@ -543,6 +547,16 @@ git push -u origin devtheme
 ```
 After doing so once, push subsequent updates using `git push`.
 
+When finished implementing a new feature or post on the development branch, add and commit it. 
+Then merge it with the master branch and push it to remote as follows:
+
+```
+git merge master
+git checkout master
+git merge devtheme
+git push
+```
+And switch back to the development branch to continue implementing.
 
 
 ### Purpose
@@ -568,31 +582,44 @@ Resources required to scale up the site to serve a larger audience:
 *   Quanta magazine: <https://www.quantamagazine.org/>
 *   Boris Belousov: <http://www.boris-belousov.net/>
 *   Adam Laycock: <https://arcath.net/>
-
+*   Carlos Agarie: <http://onox.com.br/>
+*   Jeremy Blum: <http://www.jeremyblum.com/blog/>
 
 ### Features 
 
 The actual prototype: pages and page components
 
 1.  Main page
-    *   Banner showcasing selection of graphical work/photographs with link to the respective post
-    *   List or grid of posts: background image, title and date
+    *   Banner showcasing selection of graphical work/photographs with link to the respective post:
+        +   Adding the post link is facilitated by moving the YAML details for the slides from the 
+            `index.html` front page to the respective blog post pages. New variable is added to the
+            post YAML: whether the post appears in the banner.
+        +   The banner images are also depicted at the top of the respective blog posts.
+    *   List or grid of posts: background image, title and date with link to the respective post 
+        +   Adding the post link is facilitated by moving the YAML details for the posts from the 
+            `index.html` front page to the respective blog post pages. New variable is added to the
+            post YAML: whether the post appears in the front page's post display.
     
 2.  Blog overview page
     *   Reverse chronological list of posts (5 per page)
     *   For each post: title, date, excerpt, "More" button
-    *   Sidebar: [search function](http://jekyll.tips/jekyll-casts/jekyll-search-using-lunr-js/) and Previous/Next post buttons
+    *   Sidebar: 
+        *   search bar
+        *   blogroll/links
     
 3.  Individual blog post page
+    *   layout: make content less wide on large screen:
+        *   Achieved by setting `max-width` to `75em` for locator `.wrapper > .inner` (was 90em)
+        *   This did however leave images in Rmarkdown-based blog post unchanged. This remains to be fixed.
     *   title
     *   date
     *   content
     *   syntax highlighting ([Rouge](https://jekyllrb.com/docs/templates/#code-snippet-highlighting))
     *   mathematical notation support (MathJax CDN, and place all math notation inside `$$ ... $$`)
     *   (literature) references
-    *   list tags, categories
-    *   Disqus
+    *   list category/ies below title
     *   Share buttons (Twitter, email)
+    *   Disqus (between share buttons and page footer)
 
 4.  About page
 
@@ -603,12 +630,95 @@ The actual prototype: pages and page components
 
 6.  On every page, a navigation bar with links to
     1.  Home page
-    2.  Drop-down list with post categories
-    3.  Blog overview page
-    4.  About page / Impressum
+    2.  Blog overview page, with dropdown list to individual blog categories
+    3.  About page / Impressum
+    4.  [search function](http://jekyll.tips/jekyll-casts/jekyll-search-using-lunr-js/) 
+
+Dropdown list to individual blog categories:
+Try plugin "jekyll-paginate-category 0.1.2" to obtain pagination for categories (install as gem).
+Code: 
+```
+require "jekyll-paginate-category/version"
+
+module Jekyll
+  module Paginate
+    module Category
+      
+      class Pagination < Generator
+        safe true
+        priority :lowest
+
+        def generate(site)
+          if Paginate::Pager.pagination_enabled?(site)
+            site.categories.each do |category, posts|
+              total = Paginate::Pager.calculate_pages(posts, site.config['paginate'])
+              (1..total).each do |i|
+                site.pages << IndexPage.new(site, category, i)
+              end
+            end
+          end
+        end
+      end
+
+      class IndexPage < Page
+        def initialize(site, category, num_page)
+          @site = site
+          @base = site.source
+
+          category_dir = site.config['category_dir'] || 'categories'
+          @dir = File.join(category_dir, category)
+
+          @name = Paginate::Pager.paginate_path(site, num_page)
+          @name.concat '/' unless @name.end_with? '/'
+          @name += 'index.html'
+
+          self.process(@name)
+
+          category_layout = site.config['category_layout'] || 'index.html'
+          self.read_yaml(@base, category_layout)
+          
+          self.data.merge!(
+                           'title'     => category,
+                           'paginator' => Paginate::Pager.new(site, num_page, site.categories[category])
+                          )
+        end
+
+        def template
+          '/:path/:basename:output_ext'
+        end
+      end
+      
+    end
+  end
+end
+```
+
+To make this work, include an index file for categories (see below) and adapt configuration. For the blog in case, usae the following settings:
+```
+# Pagination
+paginate: 5
+paginate_path: "/blog/page:num/"
+
+category_dir: "/"
+category_layout: "/blog/category_index.html"
+
+```
+
+Template suggested for the index file: the first three lines make Jekyll use the paginator method for variable "page" defined in the plug-in
+```
+{% if page.paginator %}
+  {% assign paginator = page.paginator %}
+{% endif %}
+
+{% for post in paginator.posts %}
+  ...
+{% endfor %}
+```
+
 
 7.  On every page 
     *   reduced footer with social buttons and RSS feed, copyright statement
+
 
 
 ### Tools list

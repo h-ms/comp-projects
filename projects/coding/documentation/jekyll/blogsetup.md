@@ -32,7 +32,7 @@ The following commands are run from `/home/cabox/workspace` on a CodeAnywhere bo
          Upgrade to newest version:
          `rvm use ruby --install --default`
     *   Version installed: `ruby 2.3.0p0 (2015-12-25 revision 53290)`
-        Uninstall older ruby 2.1.2: `rvm uninstall 2.1.2`
+        Uninstall older ruby (2.1.2): `rvm uninstall 2.1.2`
 3.  Install Bundler using `gem install bundler`. Version installed: `1.13.6`.
 
 

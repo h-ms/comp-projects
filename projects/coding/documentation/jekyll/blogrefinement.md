@@ -610,7 +610,9 @@ The actual prototype: pages and page components
 3.  Individual blog post page
     *   layout: make content less wide on large screen:
         *   Achieved by setting `max-width` to `75em` for locator `.wrapper > .inner` (was 90em)
-        *   This did however leave images in Rmarkdown-based blog post unchanged. This remains to be fixed.
+        *   This did however leave images in Rmarkdown-based blog post unchanged.
+            Fix this for figures added in markdown by using the following kramdown syntax: `![Jekyll with servr and knitr](http://i.imgur.com/gKVGhiP.png){:.image.fit}`
+            Fix this for figures added in Rmarkdown by using a knit hook with function `wrap` and then adding option `wrap = 'span class=""'` to the R tag; this method still needs to be checked
     *   title
     *   date
     *   content

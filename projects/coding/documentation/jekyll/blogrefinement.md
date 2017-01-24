@@ -622,7 +622,15 @@ The actual prototype: pages and page components
     *   (literature) references
     *   list category/ies below title
     *   Disqus (between share buttons and page footer)
-    *   Share buttons (Twitter, email)
+    *   Share buttons (Twitter, email, Pocket):
+        *   this were centered by making adding a class `share` to `ul` locator's `.icons` class and in the `scss` setting `text-align: center;`
+        *   adding a "Tweet" button: <https://dev.twitter.com/web/tweet-button>
+        *   adding a "mailto:" button: Enable email handlers in browser and [this](http://www.telerik.com/forums/proper-way-to-do-mailto-and-tel-links#QaVhNB6cekqeTiYIsY5-EA) link
+        *   adding a "getPocket" [button](https://bootstrapious.com/p/share-icons)
+    *   Remove standard contact info from individual blog posts (instead, Disqus and share links are to be provided below blog post main text).
+        Disqus and post sharing links are not entered into the `post.html` layout, but instead in its wrapper template, the `no-sidebar.html` layout: it wraps the post layout in its own `section` tag.
+        The Disqus and share buttons should end up in their own section.
+        The general footer page is split in two: one for the contact details, one for the copyright statement.
 
 
 4.  About page

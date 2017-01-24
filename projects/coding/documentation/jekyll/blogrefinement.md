@@ -609,10 +609,11 @@ The actual prototype: pages and page components
     
 3.  Individual blog post page
     *   layout: make content less wide on large screen:
-        *   Achieved by setting `max-width` to `75em` for locator `.wrapper > .inner` (was 90em)
-        *   This did however leave images in Rmarkdown-based blog post unchanged.
+        *   Achieved by setting adding a new CSS class `.post` to `.wrapper` and setting `max-width` to `50em` (~100 characters) for locator `.wrapper .post > .inner` (was 90em). 
+        *   This did however leave *images* in Rmarkdown-based blog post unchanged.
             Fix this for figures added in markdown by using the following kramdown syntax: `![Jekyll with servr and knitr](http://i.imgur.com/gKVGhiP.png){:.image.fit}`
-            Fix this for figures added in Rmarkdown by using a knit hook with function `wrap` and then adding option `wrap = 'span class=""'` to the R tag; this method still needs to be checked
+            Implement the same fix for Rmarkdown by using a knit hook with function `wrap` and then adding option `wrap = ':.image.fit'` to the R tag; if resizing the image, make sure to increase resolution (`dpi=300`).
+            Hook example: <http://stackoverflow.com/a/15374583>
     *   title
     *   date
     *   content
@@ -620,8 +621,9 @@ The actual prototype: pages and page components
     *   mathematical notation support (MathJax CDN, and place all math notation inside `$$ ... $$`)
     *   (literature) references
     *   list category/ies below title
-    *   Share buttons (Twitter, email)
     *   Disqus (between share buttons and page footer)
+    *   Share buttons (Twitter, email)
+
 
 4.  About page
 
